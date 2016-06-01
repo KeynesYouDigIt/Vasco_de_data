@@ -1,0 +1,18 @@
+notes on retunring JSON files
+
+In [66]: os.chdir('C:\Users\Vince\Desktop')
+##note that there is an existing file in this dir called "out" with no type in the name. we should also be able to use
+open(name, 'w')
+#to create the file 
+
+In [75]: out=open('out', 'r+')
+
+In [76]: json.dump(wb_availibility_dic, out)
+
+In [78]: out.close()
+
+In [79]:
+
+###OOOORRRRRR this creaates data.json while declaring the ability to write, and stores it in a temporary object fp which is passed as an argumennt
+with open('data.json', 'w') as fp:
+    json.dump(#dictionary object goes here, fp)

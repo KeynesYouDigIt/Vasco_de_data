@@ -1,0 +1,41 @@
+build_on_ind = False
+
+#bartender
+if build_on_ind == True:
+	Indi_buildit()
+else:
+	Val_buildit()
+
+final_df=pd.DataFrame()
+
+def Indi_buildit ():
+	global final_df
+#first make an iterable object
+	herp_it = []
+	it=-1
+	raw=herp[1]
+
+	for d in raw:
+		it += 1
+		herp_it.append(it)
+
+		
+		for i in herp_it:
+			ob = raw[i]
+			df_ob = pd.DataFrame(ob)
+			indi_df_ob=df_ob[df_ob.index == "id"]
+			final_df = final_df.append(indi_df_ob)
+
+def Val_buildit():
+	herp_it = [0]
+	it=-1
+	for i in herp[1]:
+		it += 1
+		herp_it.append(it)	
+
+		for i in herp_it:
+			ob = herp[1][i]
+			df_ob = pd.DataFrame(ob)
+
+			global val_df_ob
+			val_df_ob=big_df_ob[big_df_ob.index == "value"]

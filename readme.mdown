@@ -1,0 +1,24 @@
+#Vasco de Data
+##originally a project for Blazing db
+##I have been an amateur dev for about 9 months, this is my first major project.
+This project will scrape availible international economic data from multiple sources for quick cleaning, standardization, and transformation. 
+
+####What can you do to help?
+
+Right now, the python scripts are in the bin folder, and they only really work for the UN and World Bank APIs.
+#######info on WB api
+http://data.worldbank.org/querybuilder
+#######info on UN api
+http://data.unhcr.org/wiki/index.php/API_Documentation
+
+Next we will be adding sources! Send pushes with seperate sctips that return json from whichever soure interests you. Ideally, do this *after* running the current scripts and try to get the data to return in the same structure/format.
+
+Below are links
+
+http://www.opendatanetwork.com/
+
+http://atlas.media.mit.edu/api/#data
+
+be sure to check out blazing db at http://blazingdb.com/. they are doing this for social good more than marketing, but I thought Id give em a shoutout here :)
+
+fun times. much econ. wow.

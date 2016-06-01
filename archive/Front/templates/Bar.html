@@ -1,0 +1,31 @@
+$def with (order_html)
+
+<html>
+	<head>
+		<title> Public Data Pub </title>
+        <!--link href="Front/styles/paint_and_letter.css" rel="stylesheet" type="text/css"-->
+    </head>
+<h1>Pub under construction here</h1>
+<br><br>
+<div id="check">this is a div with id check. ignore it. </div>
+<body>
+<p>email feedback to <em>altereeeeego@gmail.com</em></p>
+	<br>
+	<p>/////////
+	be sure to check out blazing db at http://blazingdb.com/
+	/////////</p>
+	<p>You should now see all the availible data for the countries and years you entered as a big print out of just pure JSON.
+	Soon I will be able to email it to you in multiple file formats or even work with it here in the browser! I just have to learn
+	Java script.
+
+	for now, try ctrl+f to find indicators that interest you.</p>
+
+<a href="/Bar"> do it again! </a>
+$if order_html:
+	<p> $order_html</p>
+$else:
+	<p> no order, else at line 22 of bar.html is true</p> 
+
+<!--script src="front/scripts/Hostess.js"></script -->
+</body>
+</html>
