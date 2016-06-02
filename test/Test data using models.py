@@ -1,4 +1,4 @@
-'''This, of course, is a very week test an needs some assert statements. 
+'''This, of course, is a very week test that needs some assert statements. 
 For the time being, I simply run select*from statements in PGadmin to make sure the data is being stored as expected.'''
 
 rebuild_db=False
