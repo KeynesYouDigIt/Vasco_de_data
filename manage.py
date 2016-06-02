@@ -16,7 +16,7 @@ manager.add_command('db', MigrateCommand)
 
 @manager.command
 def list_routes():
-    '''big ups to http://flask.pocoo.org/snippets/117/'''
+    '''Taken from http://flask.pocoo.org/snippets/117/'''
     import urllib
     from flask import render_template, url_for
     output = []

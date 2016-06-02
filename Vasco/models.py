@@ -1,8 +1,9 @@
 from datetime import datetime
 from sqlalchemy import desc
 from Vasco import db
-#from flask_login import UserMixin
-#from werkzeug.security import check_password_hash, generate_password_hash
+
+'''The models below were able to connect to and be created in my Postgres database, and stored the test data in /tests/
+They will be used to store parsed results from various public data APIs'''
 
 class Entity(db.Model):
     '''An entity is  a country, state, or any other body *about which* there may be data.'''
@@ -51,14 +52,9 @@ class Literal_data(db.Model):
 
 
 class Saved_data_sets(object):
-    """docstring for Data_sets"""
+    """In the early release days, i will allow storing of some shared data sets to give users and idea where to start
+    this table also serves as a boiler plate from which I can build a robust login and save data sets system"""
     id = db.Column(db.Integer, primary_key=True)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     comments = db.Column(db.Text, nullable=False)
     tags = db.Column(db.Text, nullable=False)
-        
-
-#Running sql on the above
-#hey=db.engine.execute('select * from User')
-#    #consider making new var to actualy use data
-#data = hey.fetchall() http://docs.sqlalchemy.org/en/latest/core/connections.html

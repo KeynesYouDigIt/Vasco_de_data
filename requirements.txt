@@ -12,6 +12,7 @@ Flask-Migrate==1.8.0
 Flask-Moment==0.5.1
 Flask-Script==2.0.5
 Flask-SQLAlchemy==2.1
+inflect==0.2.5
 itsdangerous==0.24
 Jinja2==2.8
 lazy-object-proxy==1.2.1
@@ -31,6 +32,8 @@ six==1.10.0
 snowballstemmer==1.2.1
 Sphinx==1.3.5
 sphinx-rtd-theme==0.1.9
+sqlacodegen==1.1.6
 SQLAlchemy==1.0.13
 Werkzeug==0.11.3
 wrapt==1.10.6
+lxml==3.5.0

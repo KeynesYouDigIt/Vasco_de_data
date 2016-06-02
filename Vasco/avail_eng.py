@@ -14,17 +14,21 @@ from urllib2 import urlopen
 
 
 def get_avail():
+    '''this is function is the begining of a project to make the original API (archive/Bartender_no_ui.py) modular and flexible. 
+    as stated in views.py, I plan on creating a robust system that calls the public data APIs and stores the data in a Postgres database.'''
+
     '''put desired countries, years, indicators as strings. 
-    ISO codes for countries pls'''
-    global order_countries
+    ISO codes for countries'''
     order_countries=['BRA','PER','ECU','CHL']
-    global order_years
-    order_years=['2011','2012','2013']
-    global glass
-    glass='csv'
-    global save_dir
+    order_years=['2011','2012','2013]
+    saveas_file_type='csv'
     save_dir=os.getcwd()
 
+    #the below gets a list of dictionaries that constitutes a full library of World Bank indicators
+    #the indicators are simply represented by meta data which is converted into actual indicator names below (line 91 and on)
+
+    ###by generating its own iterator it violates 7 PEP 279, I am hoping to fix that soon.
+    ###I should be able to test and remove of the global calls soon, as this is not good practice long term.
     indi=rq.get('http://api.worldbank.org/indicators?format=json')
     jindi=indi.json()
     global wb_indi_list
@@ -36,6 +40,9 @@ def get_avail():
         it += 1
         wb_indi_it.append(it)
 
+
+    #the below gets a list of dictionaries that constitutes a full library of United Nations indicators
+    #the indicators are simply represented by id numbers which are converted into actual indicator names below (line 91 and on)
     wb_indi_it=np.asarray(wb_indi_it)
     un_indi=rq.get('http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator')
     jun_indi=un_indi.json()
@@ -46,7 +53,6 @@ def get_avail():
     for i in UNHDR_indi_dic:
         si=str(i)
         UNHDR_indi_list.append(si)
-
     global UN_indi_it
     UN_indi_it = []
     it=-1
@@ -55,6 +61,8 @@ def get_avail():
         UN_indi_it.append(it)
 
     UN_indi_it=np.asarray(UN_indi_it)
+
+    #the below gets a list a Dictionary of ISO codes and their corresponding countries
     html = urlopen('https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3').read()
     BS = BeautifulSoup(html, "lxml")
     tds=BS.find_all('td')
@@ -63,16 +71,6 @@ def get_avail():
     for d in tds:
         it += 1
         herp_it.append(it)
-
-    herp_it = np.asarray(herp_it)
-    html = urlopen('https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3').read()
-    BS = BeautifulSoup(html, "lxml")
-    tds=BS.find_all('td')
-    herp_it = []
-    it=-1
-    for d in tds:
-    	it += 1
-    	herp_it.append(it)
 
     herp_it = np.asarray(herp_it)
     global iso_dic
@@ -89,10 +87,12 @@ def get_avail():
     		else:
     			pass
 
+    #the below reverses the ISO code dictionary in a new object to get country name using the ISO code
     global iso_dic_code_is_key
     iso_dic_code_is_key={v: k for k, v in iso_dic.items()}
 
-
+    #lines 91-165 parse the dictionaries above to check the availibility of every indicator for the specified Countries (or entities) and years
+    #if the data exists, it is returned
     global wb_availibility_dic
     wb_availibility_dic={}
     global wb_checkiftheyhave_list
@@ -181,13 +181,3 @@ def get_files():
 
     un_df=pd.DataFrame(un_finished_avail)
     un_df.to_csv('un_availibility.csv')
-
-
-#below is not called because it doesnt work yet, still a work in progress...
-##http://docs.sqlalchemy.org/en/latest/core/engines.html
-#?
-def sqlize():
-    from sqlalchemy import create_engine
-    engine = create_engine('postgresql://postgres:sh0tsR4l00sers@localhost:5432/postgres')
-    #engine = create_engine("mssql://me:pass@localhost/testdb")
-    duff.to_sql('pubdata_wb_un', con=engine, flavor='mssql')
