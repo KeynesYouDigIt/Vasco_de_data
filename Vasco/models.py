@@ -2,8 +2,13 @@ from datetime import datetime
 from sqlalchemy import desc
 from Vasco import db
 
-'''The models below were able to connect to and be created in my Postgres database, and stored the test data in /tests/
-They will be used to store parsed results from various public data APIs'''
+"""
+The models below were able to connect to and be created in my Postgres database, and stored the test data in /tests/
+They will be used to store parsed results from various public data APIs
+
+see a full schema at
+Vasco de Data\\archive\\diagrams\\db schema
+"""
 
 class Entity(db.Model):
     '''An entity is  a country, state, or any other body *about which* there may be data.'''
