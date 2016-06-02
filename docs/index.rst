@@ -3,13 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pubdatapub's documentation!
+Welcome to Vasco's documentation!
 ======================================
 
-its absolutely terrible! the project is not ready to be doccumented you know.
+Documentation not ready to prepare
 --------------------------------------
 
-:ref:`here` is a reference to another rst file that says stuff that i built all by myself 
+:ref:`here`
 
 Contents:
 
