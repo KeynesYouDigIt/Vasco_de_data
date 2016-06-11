@@ -12,15 +12,14 @@ from io import StringIO, BytesIO
 import urllib2 as url
 from urllib2 import urlopen
 
-
-def get_avail():
+def get_avail(countries=['BRA','PER','CHL'], years=['2011','2012','2013']):
     '''this is function is the begining of a project to make the original API (archive/Bartender_no_ui.py) modular and flexible. 
     as stated in views.py, I plan on creating a robust system that calls the public data APIs and stores the data in a Postgres database.'''
 
     '''put desired countries, years, indicators as strings. 
     ISO codes for countries'''
-    order_countries=['BRA','PER','ECU','CHL']
-    order_years=['2011','2012','2013]
+    order_countries=countries
+    order_years=years
     saveas_file_type='csv'
     save_dir=os.getcwd()
 
@@ -169,15 +168,15 @@ def get_avail():
     return both
 
 
-def get_files():
-    with open('wb_availibility.json', 'w') as fp:
-        json.dump(wb_finished_avail, fp)
+def make_files(ftype='csv'):
 
-    with open('un_availibility.json', 'w') as fp:
-        json.dump(un_finished_avail, fp)
+    ftype=ftype
 
-    wb_df=pd.DataFrame(wb_finished_avail)
-    wb_df.to_csv('wb_availibility.csv')
+    if ftype='csv':
+        with open('wb_availibility.json', 'w') as fp:
+            wb_df=pd.DataFrame(both)
+            wb_df.to_csv('availibility.csv')
 
-    un_df=pd.DataFrame(un_finished_avail)
-    un_df.to_csv('un_availibility.csv')
+    elif ftype='json':
+        with open('un_availibility.json', 'w') as fp:
+            json.dump(un_finished_avail, fp)
