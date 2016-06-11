@@ -12,6 +12,8 @@ from io import StringIO, BytesIO
 import urllib2 as url
 from urllib2 import urlopen
 
+'''run me as you would any python file, and watch the typos! this console based UI has few vaidators!!'''
+
 #the below gets a list a Dictionary of ISO codes and their corresponding countries
 html = urlopen('https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3').read()
 BS = BeautifulSoup(html, "lxml")
