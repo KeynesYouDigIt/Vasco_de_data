@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% from "macros.html" import render_field %}
+
+
+<!-- information on these variables can be found in Vasco\views.py-->
+{% block content %}
+    <div class="jumbotron">
+      <div class="container">
+      <img src="static/img/Vasco.jpg" height="145" width="145">
+        <h1>Vasco de Data</h1>
+        <br>
+        <script src="static/js/main.js"></script>
+        <br><br>
+          <h2> Public data that is {{ htwo }} </h2>
+          <br><br><br>
+          data has been gathered for <br><br>{{ countries_etld }}
+          <br><br>
+          <br><br>
+          <p>So it's actually fun to explore {{ usr }}
+          <br>
+          Please select a Country and a Year to see indicator availibility
+          <br>
+          <section>
+          <br>
+          hold the ctrl button, and click and drag to select more than one.
+          <br><br><br><br>
+          <table>
+            <form action="" method="post">
+                {{avail_form.hidden_tag()}}
+                    <tr><table>
+                    {{ render_field(avail_form.countries, size=15) }}
+                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+                     {{ render_field(avail_form.years, size=15)}}
+                    </table>
+                    </tr>
+                    <br><br><br><br>
+                    <tr class= "submit" align="center">
+                        <td></td>
+                        <td><button type='submit'class="btn btn-success" align="center"><img src="static/img/DOIT.jpg" width="90" height="60" ></button></td>
+                    </tr>
+                </table>
+            </form>
+          {% if indic_form=='please select' or indic_form=='thanks!' %}
+          <p>{{indic_form}}</p>
+          {% else %}
+          <br><br><br>
+          <br><br><br>
+          <form action="" method="post">
+            {{indic_form.hidden_tag()}}
+                <tr><table>
+                    {{ render_field(indic_form.indicators, size=15) }}
+                    </table>
+                    </tr>
+                    <br><br><br><br>
+                    <tr class= "submit" align="center">
+                        <td></td>
+                        <td><button type='submit'class="btn btn-success" align="center">submit  indicators</button></td>
+                    </tr> -->
+          {% endif %}
+
+          {% if destination_email_form=='_' or destination_email_form=='then well get your email here :)'%}
+          email form set to {{destination_email_form}}
+          {% else %}
+          <form action="" method="post">
+          <br><br><br><br><br>
+          {{destination_email_form.hidden_tag()}}
+                <tr><table>
+                    {{ render_field(destination_email_form.Email, size=15) }}
+                    </table>
+                    </tr>
+                    <br><br><br><br>
+                    <tr class= "submit" align="center">
+                        <td></td>
+                        <td><button type='submit'class="btn btn-success" align="center"><img src="static/img/DOIT.jpg" width="90" height="60" ></button></td>
+                    </tr>
+            {% endif %}
+                </table>
+            </form>
+    </section>
+      </div>
+    </div>
+{% endblock %}

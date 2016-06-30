@@ -1,1 +1,0 @@
-First, we must pick a framework. See 'issues' if youd like to discuss.

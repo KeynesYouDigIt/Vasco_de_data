@@ -18,7 +18,6 @@ db = SQLAlchemy(app)
 moment = Moment(app)
 toolbar = DebugToolbarExtension(app)
 
-import models
 from Vasco.models import *
-import views
-from views import *
+from Vasco.views import *
+from Vasco.order_takers import *

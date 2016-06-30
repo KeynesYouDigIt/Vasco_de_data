@@ -1,14 +1,10 @@
 import os
 import lxml
-from lxml import html
-from lxml import etree
 from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
 import json
 import requests as rq
-import io
-from io import StringIO, BytesIO
 import urllib2 as url
 from urllib2 import urlopen
 
@@ -91,7 +87,7 @@ def get_avail(countries, years):
     UN_indi_it=np.asarray(UN_indi_it)
 
     #lines 91-165 parse the dictionaries above to check the availibility of every indicator for the specified Countries (or entities) and years
-    #if the data exists, it is returned
+    #if the data exists, it is extracted
     global wb_availibility_dic
     wb_availibility_dic={}
     global wb_checkiftheyhave_list

@@ -21,14 +21,14 @@ body {
     padding: 15px 15px 15px 15px;
 }
 
+tr, td {
+	align: center;
+}
 
+table {
+    display: inline;
+}
 
-
-
-
-
-
-
-
-
-
+select {
+    width:350px;
+}

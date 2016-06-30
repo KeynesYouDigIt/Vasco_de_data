@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% from "macros.html" import render_field %}
+{%block styles%}
+{{ super() }}
+<style type="text/css">
+select {
+    width:650px;
+}</style>
+{%endblock%}
+<!-- information on these variables can be found in Vasco\views.py-->
+{% block content %}
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Vasco de Data</h1>
+        <br>
+        {{final}}
+        <script src="static/js/main.js"></script>
+        <br><br>
+          <h2> Public data that is {{ htwo }} </h2>
+          <br><br><br>
+          The following data points have been recorded for at least one (and likely for some) of the selected countries and years
+          <form action="" method="post">
+            {{indic_form.hidden_tag()}}
+                <table>
+                <tr>{{ render_field(indic_form.indicators, size=35) }}</tr>
+                    </table>
+                    <br><br><br><br>
+                    <tr class= "submit" align="center">
+                        <td></td>
+                        <td><button type='submit'class="btn btn-success" align="center">submit  indicators</button></td>
+                    </tr> 
+                </table>
+            </form>
+    </section>
+      </div>
+    </div>
+{% endblock %}

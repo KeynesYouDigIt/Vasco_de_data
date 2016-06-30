@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <title>You found a bug in my beard!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        * {
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        html {
+            color: #888;
+            display: table;
+            font-family: sans-serif;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
+        body {
+            display: table-cell;
+            vertical-align: middle;
+            margin: 2em auto;
+        }
+
+        h1 {
+            color: #555;
+            font-size: 2em;
+            font-weight: 400;
+        }
+
+        p {
+            margin: 0 auto;
+            width: 280px;
+        }
+
+        @media only screen and (max-width: 280px) {
+
+            body, p {
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin: 0 0 0.3em;
+            }
+
+        }
+
+    </style>
+</head>
+<body>
+<br><br><br><br>
+    <h1>You found a bug!! <br> <br> Either that or too many people are hitting the server at once. Which is great! but also sad.</h1>
+    <p>either way, if you are cool you'll <a href="mailto:vascosendsdata@gmail.com" target="_top">email me</a> with what you are trying to do, and Ill fix it or just let you know wwhen the site is OK again :) <br><br><br>that email links to vascosendsdata@gmail.com - leaving it here if youd like to skip your default email client.</p>
+</body>
+</html>
+
+{% endblock %}
+<!-- IE needs 512+ bytes: http://blogs.msdn.com/b/ieinternals/archive/2010/08/19/http-error-pages-in-internet-explorer.aspx -->

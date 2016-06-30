@@ -22,7 +22,7 @@ class Entity(db.Model):
 
     @staticmethod
     def get_by_name(name):
-        return User.query.filter_by(name=name).first()
+        return Entity.query.filter_by(name=name).first()
 
 
     def __repr__(self):
@@ -32,7 +32,7 @@ class Meta_indicator_data(db.Model):
     '''this tabe holds in depth data on indictor descriptions and sources'''
     __tablename__ = 'meta'
     id = db.Column(db.Integer, primary_key=True)
-    p_name = db.Column(db.Text, nullable=False)
+    p_name = db.Column(db.Text, nullable=False, unique=True)
     family = db.Column(db.Text, nullable=False)
     num_type = db.Column(db.Text, nullable=False)
     provider = db.Column(db.Text, nullable=False)
@@ -41,7 +41,7 @@ class Meta_indicator_data(db.Model):
 
     @staticmethod
     def get_by_name(name):
-        return User.query.filter_by(p_name=name).first()
+        return Meta_indicator_data.query.filter_by(p_name=name).first()
 
 
 class Literal_data(db.Model):
