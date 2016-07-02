@@ -8,7 +8,7 @@ basedir = os.getcwd()
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.urandom(24)
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:52186vato@localhost:5432/Ocean'
 
