@@ -19,7 +19,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] =  os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 moment = Moment(app)
 toolbar = DebugToolbarExtension(app)
-
-from Vasco.models import *
-from Vasco.views import *
-from Vasco.order_takers import *
+try:
+    from Vasco.models import *
+    from Vasco.views import *
+    from Vasco.order_takers import *
+except:
+	pass
