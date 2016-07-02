@@ -19,11 +19,13 @@ the public data APIs and stores the data in a Postgres database for easy retriva
 @app.route('/index', methods=['GET','POST'])
 def ind():
     avail_form=Availibility_order()
-    get=get_countries_etld()
-    countries_etld=[]
-    for country_tuple in get:
-        countries_etld.append(country_tuple[1])
-
+    try:
+        get=get_countries_etld()
+        countries_etld=[]
+        for country_tuple in get:
+            countries_etld.append(country_tuple[1])
+    except:
+        countries_etld='nothing yet'
     if avail_form.validate_on_submit():
         order_y=avail_form.years.data
         order_c=avail_form.countries.data
