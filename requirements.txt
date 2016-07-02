@@ -12,6 +12,8 @@ Flask-Migrate==1.8.0
 Flask-Moment==0.5.1
 Flask-Script==2.0.5
 Flask-SQLAlchemy==2.1
+Flask-WTF==0.12
+gunicorn==19.6.0
 inflect==0.2.5
 itsdangerous==0.24
 Jinja2==2.8
@@ -36,4 +38,5 @@ sqlacodegen==1.1.6
 SQLAlchemy==1.0.13
 Werkzeug==0.11.3
 wrapt==1.10.6
-lxml==3.5.0
+WTForms==2.1
+xlsx2csv==0.7.2
