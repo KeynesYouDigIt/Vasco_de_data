@@ -23,6 +23,8 @@ select {
             {{indic_form.hidden_tag()}}
                 <table>
                 <tr>{{ render_field(indic_form.indicators, size=35) }}</tr>
+                <tr>{{ render_field(indic_form.Email, size=35) }}</tr>
+
                     </table>
                     <br><br><br><br>
                     <tr class= "submit" align="center">
@@ -31,7 +33,4 @@ select {
                     </tr> 
                 </table>
             </form>
-    </section>
-      </div>
-    </div>
 {% endblock %}

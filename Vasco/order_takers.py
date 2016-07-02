@@ -36,12 +36,9 @@ class Availibility_order(Form):
 
 class Data_set_order(Form):
     """doc"""
-    indicators = SelectMultipleField('Indicators availible for your section here', coerce=str, validators=[DataRequired()],choices=[('no data','no data')])
+    indicators = SelectMultipleField('Indicators availible for your section here', coerce=str, choices=[('no data','no data')])
+    Email = StringField('Email <font size="1">(the data will be sent here in CSV format)</font> &nbsp  &nbsp', 
+            validators=[Length(1,120), DataRequired(), Email(message='dude, valid email. if you dont know what that is google \"email\". or, you know, maybe the internet isn\'t for you?')])
 
     def set_data_options(self, query_results):
         self.indicators.choices = query_results
-
-class email_form(Form):
-    """doc"""
-    Email = StringField('Email <font size="1">(the data will be sent here in CSV format)</font> &nbsp  &nbsp', 
-                validators=[Length(1,120), DataRequired(), Email(message='dude, valid email. if you dont know what that is google \"email\". or, you know, maybe the internet isn\'t for you?')])
