@@ -89,7 +89,7 @@ for i in UNHDR_indi_dic:
 
 UN_indi_it=np.asarray(UN_indi_it)
 
-ETL_logger = open("Vasco\ETL\ETL_log_15-45.txt", "w")
+ETL_logger = open('ETL_log_tests.txt', 'w')
 ETL_logger.write('initial objects created and log started at' + str(datetime.now().utcnow()) + '\n')
 
 def get_countries():
@@ -114,7 +114,7 @@ def get_meta_indicator_data():
             p_description='this provider has indicator descriptions, but this computer can\'t (yet) figure out how to match them to the right indicator. \n please see more info at http://hdr.undp.org/en/data',
             )   
         db.session.add(UN_indicator)
-        print ' %s added successfully to session' % indicator
+        print ' %s added successfully to session' % UN_indicator
     db.session.commit()
     #NOTE this commit currently throws non fatal errors for indictors that are in the world bank set and have the same name (2-3 right now). Next data refresh tis will be debugged
 
@@ -140,7 +140,6 @@ def get_meta_indicator_data():
                 )
             db.session.add(WB_indicator)
             print ' %s added successfully to session' % indicator
-
     db.session.commit()
 
 
@@ -227,7 +226,8 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
 
 
     ETL_logger.write('the following world bank indicators were determined to be missing or in error\n')
-    ETL_logger.write(mislist)
+    for m in mislist:
+        ETL_logger.write(m + ', ')
 
 
     mislist=[]
@@ -256,7 +256,8 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
                 ETL_logger.wrie('\n\n')
 
     ETL_logger.write('the following UNHDR indicators were determined to be missing or in error\n')
-    ETL_logger.write(mislist)
+    for m in mislist:
+        ETL_logger.write(m + ', ')
 
     #begin database processes
     for i in wb_availibility_dic.keys():
@@ -296,10 +297,12 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
 
     db.session.commit()
 
+get_meta_indicator_data()
+print 'got metas'
+
 for country in iso_dic_code_is_key.keys():
-    try:
         get_literal_indicators(countries=country, years=Years)
-    except:
-        ETL_logger.write('failed on %s' % country) 
+        ETL_logger.write('succeeded on %s' % country)
+        print 'succeeded on %s' % country
 
 ETL_logger.close()
