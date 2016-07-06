@@ -301,14 +301,20 @@ try:
     print 'got metas'
 except:
     print 'get meta failed. might we already have this data?'
-    print db.engine.execute('select * from meta')
+    try:
+        print db.engine.execute('select * from meta')
+    except:
+        pass
 
 try:
     get_countries()
     print 'got countries'
 except:
     print 'get meta failed. might we already have this data?'
-    print db.engine.execute('select * from ent')
+    try:
+        print db.engine.execute('select * from ent')
+    except:
+        pass
 
 
 for country in iso_dic_code_is_key.keys():
