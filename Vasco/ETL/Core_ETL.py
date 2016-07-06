@@ -296,9 +296,20 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
             ETL_logger.write('cant find %s' % UNHDR_availibility_dic[i][3]['indicator_name'][UNHDR_availibility_dic[i][2]].encode('ascii', 'ignore') +'in meta tabe \n')
 
     db.session.commit()
+try:
+    get_meta_indicator_data()
+    print 'got metas'
+except:
+    print 'get meta failed. might we already have this data?'
+    print db.engine.execute('select * from meta')
 
-get_meta_indicator_data()
-print 'got metas'
+try:
+    get_countries()
+    print 'got countries'
+except:
+    print 'get meta failed. might we already have this data?'
+    print db.engine.execute('select * from ent')
+
 
 for country in iso_dic_code_is_key.keys():
         get_literal_indicators(countries=country, years=Years)
