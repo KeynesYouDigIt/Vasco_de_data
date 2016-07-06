@@ -222,7 +222,7 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
                     mislist.append(str(call))
             except:
                 ETL_logger.write('key or unspecd error on %s' % call)
-                ETL_logger.wrie('\n\n')
+                ETL_logger.write('\n\n')
 
 
     ETL_logger.write('the following world bank indicators were determined to be missing or in error\n')
