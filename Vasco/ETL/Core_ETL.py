@@ -9,7 +9,6 @@ import json
 import requests as rq
 import urllib2 as url
 from urllib2 import urlopen
-os.environ['DATABASE_URL']='postgresql://postgres:52186vato@localhost:5432/Ocean'
 from Vasco.models import *
 
 #from Scraper_for_UN_indicator_descriptions import UNHDR_scrape_description
@@ -231,7 +230,7 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
 
     ETL_logger.write('the following world bank indicators were determined to be missing or in error\n')
     for m in mislist:
-        ETL_logger.write(m + ', ')
+        ETL_logger.write(m.encode('ascii', 'ignore') + ', ')
 
 
     mislist=[]
@@ -262,7 +261,7 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
 
     ETL_logger.write('the following UNHDR indicators were determined to be missing or in error\n')
     for m in mislist:
-        ETL_logger.write(m + ', ')
+        ETL_logger.write(m.encode('ascii', 'ignore') + ', ')
 
     #begin database processes
     for i in wb_availibility_dic.keys():
