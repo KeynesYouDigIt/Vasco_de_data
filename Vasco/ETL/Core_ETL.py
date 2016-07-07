@@ -9,6 +9,7 @@ import json
 import requests as rq
 import urllib2 as url
 from urllib2 import urlopen
+os.environ['DATABASE_URL']='postgresql://postgres:52186vato@localhost:5432/Ocean'
 from Vasco.models import *
 
 #from Scraper_for_UN_indicator_descriptions import UNHDR_scrape_description
@@ -130,7 +131,9 @@ def get_meta_indicator_data():
                 )
             db.session.add(WB_indicator)
             print ' %s added successfully to session' % indicator
+            db.session.commit()
         except:
+            db.session.rollback()
             WB_indicator=Meta_indicator_data(
                 p_name=wb_indi_list[indicator]['name'],
                 family='none assigned yet',
@@ -140,7 +143,7 @@ def get_meta_indicator_data():
                 )
             db.session.add(WB_indicator)
             print ' %s added successfully to session' % indicator
-    db.session.commit()
+            db.session.commit()
 
 
 def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
@@ -157,7 +160,7 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
     years=Years
 
 
-    order_countries=countries
+    order_countries=[countries]
     order_years=years
 
 
@@ -188,6 +191,7 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
         id_as_str=str(wb_indi_list[wb[1]]['id'])
         call='http://api.worldbank.org/countries/' + wb[0] + '/indicators/' + id_as_str + '?per_page=100&date=' + wb[2] +'&format=json'
         ETL_logger.write('fething from world bank : %s \n' % call)
+        print 'fething from world bank : %s \n' % call
         wb_raw_response=rq.get(call)
         if str(wb_raw_response) == '<Response [400]>':
             #servers erroring out, may be too many requests
@@ -234,7 +238,8 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
     for UN in un_checkiftheyhave_list:
         id_as_str=UNHDR_indi_list[UN[1]]
         call='http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/' + id_as_str + '/year/' + UN[2] + '/country_code/' + UN[0]
-        ETL_logger.write('fething from united nations %s' % call)
+        ETL_logger.write('fething from UNHDR %s' % call)
+        print 'fething from UNHDR : %s \n' % call
         un_raw_response=rq.get(call)
         if str(un_raw_response) == '<Response [400]>':
             ETL_logger.write('ERROR ON WB SERVERS!!! response from world bank api %s \n xxxxxxxxxxxx \n' % wb_raw_response)
@@ -273,10 +278,11 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
             )
             ETL_logger.write('adding %s for ent id - %s and meta id - %s' % (point.display_name, point.ent_id, point.meta_id))
             db.session.add(point)
+            db.session.commit()
         except:
+            db.session.rollback()
             ETL_logger.write('cant find %s' % wb_availibility_dic[i][1][0]['country']['value'] +'in meta tabe \n')
-
-    db.session.commit()
+            db.session.rollback()
 
 
     for i in UNHDR_availibility_dic.keys(): 
@@ -291,19 +297,22 @@ def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
             print 'adding %s for ent id - %s and meta id - %s' % (point.display_name, point.ent_id, point.meta_id)
             ETL_logger.write('adding %s for ent id - %s and meta id - %s' % (point.display_name, point.ent_id, point.meta_id))
             db.session.add(point)
+            db.session.commit()
         except:
+            db.session.rollback()
             print 'cant find %s' % UNHDR_availibility_dic[i][3]['indicator_name'][UNHDR_availibility_dic[i][2]].encode('ascii', 'ignore') +'in meta tabe \n'
             ETL_logger.write('cant find %s' % UNHDR_availibility_dic[i][3]['indicator_name'][UNHDR_availibility_dic[i][2]].encode('ascii', 'ignore') +'in meta tabe \n')
+            db.session.rollback()
 
-    db.session.commit()
 try:
     get_meta_indicator_data()
     print 'got metas'
 except:
     print 'get meta failed. might we already have this data?'
     try:
-        print db.engine.execute('select * from meta')
+        print db.engine.execute('select * from meta').first()
     except:
+        db.session.rollback()
         pass
 
 try:
@@ -312,14 +321,17 @@ try:
 except:
     print 'get meta failed. might we already have this data?'
     try:
-        print db.engine.execute('select * from ent')
+        print db.engine.execute('select * from ent').first()
     except:
+        db.session.rollback()
         pass
 
 
 for country in iso_dic_code_is_key.keys():
+        print 'now attempting to get %s' % country
         get_literal_indicators(countries=country, years=Years)
         ETL_logger.write('succeeded on %s' % country)
-        print 'succeeded on %s' % country
+        print 'finished on %s, printing last record in db to see if it went through' % country
+        print db.engine.execute('select * from literal').fetchall()[-1]
 
 ETL_logger.close()
