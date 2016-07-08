@@ -10,6 +10,7 @@ import requests as rq
 import urllib2 as url
 from urllib2 import urlopen
 from Vasco.models import *
+from Vasco.order_takers import get_countries_etld
 
 #from Scraper_for_UN_indicator_descriptions import UNHDR_scrape_description
 
@@ -112,12 +113,15 @@ def get_meta_indicator_data():
             num_type='none assigned yet',
             provider='United nations Human Development Report',
             p_description='this provider has indicator descriptions, but this computer can\'t (yet) figure out how to match them to the right indicator. \n please see more info at http://hdr.undp.org/en/data',
-            )   
-        db.session.add(UN_indicator)
-        print ' %s added successfully to session' % UN_indicator
+            ) 
+        try:  
+            db.session.merge(UN_indicator)
+            print ' %s added successfully to session' % UN_indicator
+        except:
+            db.session.rollback()
+            print ' %s skipped' % UN_indicator
     db.session.commit()
     #NOTE this commit currently throws non fatal errors for indictors that are in the world bank set and have the same name (2-3 right now). Next data refresh tis will be debugged
-
     for indicator in wb_indi_it:
         #try and except here is for indicators without topics (aka "families"), which throw index and key errors
         try:
@@ -128,7 +132,7 @@ def get_meta_indicator_data():
                 provider='The World Bank, via: ' + wb_indi_list[indicator]['source']['value'],
                 p_description=wb_indi_list[indicator]['sourceNote'],
                 )
-            db.session.add(WB_indicator)
+            db.session.merge(WB_indicator)
             print ' %s added successfully to session' % indicator
             db.session.commit()
         except:
@@ -140,7 +144,7 @@ def get_meta_indicator_data():
                 provider='The World Bank, via: ' + wb_indi_list[indicator]['source']['value'],
                 p_description=wb_indi_list[indicator]['sourceNote'],
                 )
-            db.session.add(WB_indicator)
+            db.session.merge(WB_indicator)
             print ' %s added successfully to session' % indicator
             db.session.commit()
 
@@ -325,8 +329,21 @@ except:
         db.session.rollback()
         pass
 
+already_got=get_countries_etld()
 
-for country in iso_dic_code_is_key.keys():
+already_got=[country[0] for country in already_got]
+
+get_these=raw_input('gimmie countries, by iso code, we need data for')
+
+get_these=get_these.split(',')
+
+for c in get_these:
+    if c in already_got:
+        get_these.pop(c)
+    else:
+        pass
+
+for country in get_these:
         print 'now attempting to get %s' % country
         get_literal_indicators(countries=country, years=Years)
         ETL_logger.write('succeeded on %s' % country)
