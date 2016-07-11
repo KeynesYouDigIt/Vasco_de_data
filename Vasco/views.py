@@ -41,6 +41,7 @@ def ind():
 
 @app.route('/blog')
 def blog_it():
+    #the database is a bit overloaded at the moment with the actual data. blogging solution is on my schedule for september.
     title='Welcome!'
     post='blog content coming September 2016.'
     return render_template('blog.html',
