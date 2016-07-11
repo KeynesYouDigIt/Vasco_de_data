@@ -15,7 +15,6 @@ from email import encoders
 Within the next couple weeks, I plan on replacing it with a robust system that calls 
 the public data APIs and stores the data in a Postgres database for easy retrival.'''
 
-@app.route('')
 @app.route('/')
 @app.route('/index', methods=['GET','POST'])
 def ind():
