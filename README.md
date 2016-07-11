@@ -4,7 +4,7 @@ A flask app designed for the exploration (fast retrieval and cleaning) of public
 A special thanks to *Blazing DB* for the inspiration to start this
 http://blazingdb.com/
 
-As of now, this is a public data API drawing from the UN and World Bank data sources that extracts, standardizes, and stores public data. You can work with this API in a command line interface by cloning the repo, installing the requirements to a virtual env, and running the get_data_CLI.py from the CLI and admin tools folder.
+As of now, the data base is populated via a public data API drawing from the UN and World Bank data sources that extracts, standardizes, and stores public data. these procs are stored in Vasco/ETL. Check out the database schema itself in Models.py, and if you'd like to propose UI tweaks Vasco/Static and Vasco/Templates hold the front end files.
 
 Check out the demo on heroku here - https://vasco-de-data.herokuapp.com/index
 
