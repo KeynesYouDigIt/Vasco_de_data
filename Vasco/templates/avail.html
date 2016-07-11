@@ -14,7 +14,6 @@ select {
         <h1>Vasco de Data</h1>
         <br>
         {{final}}
-        <script src="static/js/main.js"></script>
         <br><br>
           <h2> Public data that is {{ htwo }} </h2>
           <br><br><br>
@@ -24,6 +23,10 @@ select {
                 <table>
                 <tr>{{ render_field(indic_form.indicators, size=35) }}</tr>
                 <tr>{{ render_field(indic_form.Email, size=35) }}</tr>
+                <!--
+                <tr>{{ render_field(indic_form.send_descriptions, size=15) }}</tr>
+                descriptions are not being added to the final data set correctly, taking this out for now
+                -->
 
                     </table>
                     <br><br><br><br>

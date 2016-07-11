@@ -39,6 +39,7 @@ class Data_set_order(Form):
     indicators = SelectMultipleField('Indicators availible for your section here', coerce=str, choices=[('no data','no data')])
     Email = StringField('Email <font size="1">(the data will be sent here in CSV format)</font> &nbsp  &nbsp', 
             validators=[Length(1,120), DataRequired(), Email(message='dude, valid email. if you dont know what that is google \"email\". or, you know, maybe the internet isn\'t for you?')])
+    send_descriptions = BooleanField('<font size="1">check here if you would like indicator desctiprtions added<br></font> &nbsp  &nbsp')
 
     def set_data_options(self, query_results):
         self.indicators.choices = query_results

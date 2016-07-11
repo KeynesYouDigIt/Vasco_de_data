@@ -21,6 +21,7 @@ def ind():
     avail_form=Availibility_order()
     try:
         get=get_countries_etld()
+        #above is tuples, not just list. Below makes a list.
         countries_etld=[]
         for country_tuple in get:
             countries_etld.append(country_tuple[1])
@@ -34,22 +35,29 @@ def ind():
     return render_template('home.html', 
         htwo='Clean and Uniform',
         countries_etld=countries_etld,
-        #above gets results as list of tuples
-        usr='!!!', 
+        usr='!', 
         avail_form=avail_form
         )
 
+@app.route('/blog')
+def blog_it():
+    title='Welcome!'
+    post='blog content coming September 2016.'
+    return render_template('blog.html',
+        post=post,
+        post_title=title
+        )
+
+
 @app.route('/showmedata/<order_y>___<order_c>', methods=['GET','POST'])
 def show_avail(order_y,order_c):
-    final='final order wil display here'
+    final='Please select. don\'t be scared if the list is long! for now you can hit ctrl + f to search on most browsers. \n by the end of this year, there will be a smoother selection experience that will help you find your data.' 
+    #first step is to take years and countries and turn the strings back to lists, then select all valid data accordingly.
     order_y=order_y.replace("'","").strip('[').strip(']').split(',')
     order_c=order_c.replace("'","").strip('[').strip(']').split(',')
     order_c=[x.strip() for x in order_c]
-    #order_c=[x[1:-1] for x in order_c]
     order_y=[x.encode('ascii') for x in order_y]
     order_c=[x.encode('ascii') for x in order_c]
-    #quoted=" ' "
-    #order_c=[x+quoted for x in order_c]
     first_query = """SELECT * FROM literal 
                 WHERE year IN :years 
                 AND ent_id IN (select id from ent where name in  :names)"""
@@ -77,7 +85,6 @@ def show_avail(order_y,order_c):
                WHERE display_name IN :display_name
                  AND name IN :name
                  AND year IN :years
-
                  """
         data_return = db.engine.execute(text(query), {'display_name': tuple(indic_form.indicators.data),'name': tuple(order_c), 'years': tuple(order_y)}).fetchall()
         #FINALLY data_return works as expected
@@ -98,13 +105,28 @@ def show_avail(order_y,order_c):
             else:
                 final_list.append(final_point)
 
+        if indic_form.send_descriptions.data==True:
+            query = """SELECT p_name, p_description
+                FROM meta
+                WHERE p_name IN :display_name
+                 """
+            data_return_desc = db.engine.execute(text(query), {'display_name': tuple(indic_form.indicators.data)}).fetchall()
+        else:
+            data_return_desc = ''
+        desc_list=[]
+        for toople in data_return_desc:
+            desc_point={}
+            desc_point[toople[0]]=toople[1]
+            desc_list.append(desc_point)
         final=final_list
         final_df=pd.DataFrame(final)
+        descriptions_df=pd.DataFrame(desc_list)
         years_column=final_df.pop('Year')
         countries_column=final_df.pop('Country')
         final_df.insert(0, 'Year', years_column)
         final_df.insert(0, 'Country', countries_column)
         final_df.set_index(['Country','Year'])
+        final_df=final_df.append(descriptions_df)
         filename='Vasco_data_set'
         while filename in os.listdir(os.getcwd()):
             increment=0
@@ -144,48 +166,7 @@ def show_avail(order_y,order_c):
         htwo='Clean and Uniform',
         indic_form=indic_form,
         final=final
-        )   
-
-
-
-@app.route('/sendmedata')
-def send_it():
-    
-    sendto=str(raw_input('Please enter the email you would like to send this to'))
-    # Import smtplib for the actual sending function
-    import smtplib
-
-    # Here are the email package modules we'll need
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.base import MIMEBase
-    from email import encoders
-    
-    # Create the container (outer) email message.
-    msg = MIMEMultipart()
-    msg['Subject'] = 'Your dataset from Vasco de Data'
-    sndr='VascoSendsData@gmail.com'
-    recvr=str(sendto)
-    msg['From'] = sndr
-    msg['To'] = recvr
-
-    #content = 'wordsarewords'
-    #msg = MIMEText(content)
-    #msg.preamble = 'worrds'
-    '''throws MultipartConversionError: 
-    Cannot attach additional subparts to non-multipart/*'''
-
-    # Now the file itself from get_make_file_params above
-    filename=str(file)
-    fp = open(filename, 'rb')
-    #file=csv.reader(fp)
-    attachment = MIMEBase('csv','csv')
-    attachment.set_payload(fp.read())
-    encoders.encode_base64(attachment)
-    attachment.add_header("Content-Disposition", 
-        "attachment", 
-        filename=file)
-    msg.attach(attachment)
-    fp.close()
+        )
 
 @app.errorhandler(403)
 def forbidden(e):

@@ -12,8 +12,6 @@ app.config['DEBUG'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] =  os.environ['DATABASE_URL']
 
-#local run uses 'postgresql://postgres:52186vato@localhost:5432/Ocean'
-
 #blueprints for moduarization of the app and its functions coming soon!
 
 db = SQLAlchemy(app)

@@ -6,30 +6,33 @@
 {% block content %}
     <div class="jumbotron">
       <div class="container">
-      <img src="static/img/Vasco.jpg" height="145" width="145">
+      <img src="static/img/Vasco.jpg" height="165" width="175">
         <h1>Vasco de Data</h1>
         <br>
-        <script src="static/js/main.js"></script>
-        <br><br>
+        <!-- js is ready once I want it <script src="static/js/main.js"></script> -->
+        <br>
           <h2> Public data that is {{ htwo }} </h2>
-          <br><br><br>
-          data has been gathered for <br><br>{{ countries_etld }}
-          <br><br>
-          <br><br>
-          <p>So it's actually fun to explore {{ usr }}
           <br>
-          Please select a Country and a Year to see indicator availibility
+          <hr>
+          <br>
+          <em>data has been gathered for the following countries </em>
+          <br><br>
+          {% for c in countries_etld %}
+          {{ c }} | 
+          {% endfor%}
+          <br><br>
+          <h3>Please select a Country and a Year to see indicator availibility</h3>
           <br>
           <section>
           <br>
-          hold the ctrl button, and click and drag to select more than one.
+          hold the ctrl button or click and drag to select more than one.
           <br><br><br><br>
           <table>
             <form action="" method="post">
                 {{avail_form.hidden_tag()}}
                     <tr><table>
                     {{ render_field(avail_form.countries, size=15) }}
-                     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+
                      {{ render_field(avail_form.years, size=15)}}
                     </table>
                     </tr>
