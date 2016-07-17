@@ -1,6 +1,7 @@
 from flask_wtf import Form
 from wtforms.fields import *
 from flask.ext.wtf.html5 import URLField
+#from flask.ext.wtf import Optional
 from wtforms.validators import *
 from wtforms.validators import ValidationError, StopValidation
 from models import *
@@ -36,8 +37,12 @@ class Availibility_order(Form):
 class Data_set_order(Form):
     """this will build out the final data set from the data in the form declared above"""
     indicators = SelectMultipleField('Indicators availible for your section here', coerce=str, choices=[('no data','no data')])
-    Email = StringField('Email <font size="1">(the data will be sent here in CSV format)</font> &nbsp  &nbsp', 
-            validators=[Length(1,120), DataRequired(), Email(message='dude, valid email. if you dont know what that is google \"email\". or, you know, maybe the internet isn\'t for you?')])
+    Email = StringField('If you\'d like an email with the data please enter your address here. <font size="1">(the data will be sent here in CSV format)</font> &nbsp  &nbsp', 
+             validators=[
+             Optional(),
+             Length(1,120),
+             Email(message='dude, valid email. if you dont know what that is google \"email\". or, you know, maybe the internet isn\'t for you?')
+             ])
     send_descriptions = BooleanField('<font size="1">check here if you would like indicator desctiprtions added<br></font> &nbsp  &nbsp')
     #the above will allow users to add data descriptions once they are building to the final file correctly, work still in progress
 

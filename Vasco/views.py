@@ -88,7 +88,6 @@ def show_avail(order_y,order_c):
                  AND year IN :years
                  """
         data_return = db.engine.execute(text(query), {'display_name': tuple(indic_form.indicators.data),'name': tuple(order_c), 'years': tuple(order_y)}).fetchall()
-        #FINALLY data_return works as expected
         final_list=[]
         for toople in data_return:
             final_point={}
@@ -135,37 +134,38 @@ def show_avail(order_y,order_c):
             increment+=1
         filename=filename+'.csv'
         final_df.to_csv(filename,header=True,engine='python')
-        msg = MIMEMultipart()
-        msg['Subject'] = 'Your dataset from Vasco de Data'
-        
-        sndr='VascoSendsData@gmail.com'
-        recvr=str(empty_indic_form.Email.data)
-        
-        msg['From'] = sndr
-        msg['To'] = recvr
-        filename=str(filename)
         with open(filename, 'r') as fp:
-        	read_csv=fp.read()
+            read_csv=fp.read()
 
-        attachment = MIMEBase('csv','csv')
-        attachment.set_payload(read_csv)
-        encoders.encode_base64(attachment)
-        attachment.add_header("Content-Disposition", 
-            "attachment", 
-            filename=filename)
-        msg.attach(attachment)
-        #fp.close()
-        username = sndr
-        password = 'DoYou52186Remember'
-        server = smtplib.SMTP('smtp.gmail.com',587)
-        server.ehlo()
-        server.starttls()
-        server.login(username,password)
-        server.sendmail(from_addr=sndr, to_addrs=recvr, msg=msg.as_string())
-        server.quit()
+        if empty_indic_form.Email.data:
+            msg = MIMEMultipart()
+            msg['Subject'] = 'Your dataset from Vasco de Data'
+            
+            sndr='VascoSendsData@gmail.com'
+            recvr=str(empty_indic_form.Email.data)
+            
+            msg['From'] = sndr
+            msg['To'] = recvr
+            filename=str(filename)
+            attachment = MIMEBase('csv','csv')
+            attachment.set_payload(read_csv)
+            encoders.encode_base64(attachment)
+            attachment.add_header("Content-Disposition", 
+                "attachment", 
+                filename=filename)
+            msg.attach(attachment)
+            #fp.close()
+            username = sndr
+            password = 'DoYou52186Remember'
+            server = smtplib.SMTP('smtp.gmail.com',587)
+            server.ehlo()
+            server.starttls()
+            server.login(username,password)
+            server.sendmail(from_addr=sndr, to_addrs=recvr, msg=msg.as_string())
+            server.quit()
         return Response(read_csv, 
-        		mimetype='text/csv',
-        		headers={"Content-disposition":
+                mimetype='text/csv',
+                headers={"Content-disposition":
                  "attachment; filename="+filename})
         #return redirect(url_for('ind'))
 
