@@ -1,4 +1,4 @@
-from flask import render_template, url_for, request, redirect, flash, abort
+from flask import render_template, url_for, request, redirect, flash, abort, Response
 from sqlalchemy.sql import text
 from datetime import datetime
 from Vasco import *
@@ -144,15 +144,17 @@ def show_avail(order_y,order_c):
         msg['From'] = sndr
         msg['To'] = recvr
         filename=str(filename)
-        fp = open(filename, 'r')
+        with open(filename, 'r') as fp:
+        	read_csv=fp.read()
+
         attachment = MIMEBase('csv','csv')
-        attachment.set_payload(fp.read())
+        attachment.set_payload(read_csv)
         encoders.encode_base64(attachment)
         attachment.add_header("Content-Disposition", 
             "attachment", 
             filename=filename)
         msg.attach(attachment)
-        fp.close()
+        #fp.close()
         username = sndr
         password = 'DoYou52186Remember'
         server = smtplib.SMTP('smtp.gmail.com',587)
@@ -161,7 +163,11 @@ def show_avail(order_y,order_c):
         server.login(username,password)
         server.sendmail(from_addr=sndr, to_addrs=recvr, msg=msg.as_string())
         server.quit()
-        return redirect(url_for('ind'))
+        return Response(read_csv, 
+        		mimetype='text/csv',
+        		headers={"Content-disposition":
+                 "attachment; filename="+filename})
+        #return redirect(url_for('ind'))
 
     return render_template('avail.html', 
         htwo='Clean and Uniform',
