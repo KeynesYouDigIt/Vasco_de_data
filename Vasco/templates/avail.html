@@ -20,7 +20,7 @@ select {
           The following data points have been recorded for at least one (and likely for some) of the selected countries and years
           <br>
           If you dont notice the page starting to load the email to send you, your data set might be to big. Consider a smaller selection first. The data will also be sent directly as a download, submit your request again if the download does not start instantly.
-          <form action="" method="post">
+          <form id="main_form" action="" method="post">
             {{indic_form.hidden_tag()}}
                 <table>
                 <tr>{{ render_field(indic_form.indicators, size=35) }}</tr>
@@ -29,7 +29,7 @@ select {
                 <tr>{{ render_field(indic_form.send_descriptions, size=15) }}</tr>
                 descriptions are not being added to the final data set correctly, taking this out for now
                 -->
-
+                <div id="loading">take your pick</div>
                     </table>
                     <br><br><br><br>
                     <tr class= "submit" align="center">

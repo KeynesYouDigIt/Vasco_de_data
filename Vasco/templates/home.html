@@ -28,7 +28,7 @@
           hold the ctrl button or click and drag to select more than one.
           <br><br><br><br>
           <table>
-            <form action="" method="post">
+            <form id="main_form" action="" method="post">
                 {{avail_form.hidden_tag()}}
                     <tr><table>
                     {{ render_field(avail_form.countries, size=15) }}
@@ -41,6 +41,7 @@
                         <td></td>
                         <td><button type='submit'class="btn btn-success" align="center"><img src="static/img/DOIT.jpg" width="90" height="60" ></button></td>
                     </tr>
+                    <tr><div id="loading">ready when you are!</div></tr>
                 </table>
             </form>
     </section>
