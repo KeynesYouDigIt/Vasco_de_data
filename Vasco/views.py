@@ -31,6 +31,8 @@ def ind():
         order_y=avail_form.years.data
         order_c=avail_form.countries.data
         return redirect(url_for('show_avail', order_y=order_y, order_c=order_c))
+    else:
+        flash('try again!')
 
     return render_template('home.html', 
         htwo='Clean and Uniform',
