@@ -8,8 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>{% block title %}{% endblock %}</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1">       
         {% block styles %}
           <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
           <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -38,11 +37,13 @@
       {% block sidebar%}
       {% endblock %}
       <hr>
-        <div class="jumbotron">
-            <div class="container"  >special thanks to <a href= 'http://www.initializr.com/'>initilizr</a> (thanks guys, you rock!! srsly!) where i downloaded this web template. </div></div>
       <hr>
       <footer>
-        >Vasco de Data | &copy; KeynesYouDigIt 2016 ... not really a copy right lol | <a href='https://www.github.com/KeynesYouDigIt'>my github</a> | <a href="https://www.linkedin.com/in/vincent-buscarello-0561651a">LinkedIn</a> 
+        >Vasco de Data | &copy; KeynesYouDigIt 2016 (not really copyrighted yet) | <a href='https://www.github.com/KeynesYouDigIt'>my github</a> | <a href="https://www.linkedin.com/in/vincent-buscarello-0561651a">LinkedIn</a> 
+        <br><br>
+        <div class="container">Find out about when enhancements and other cool stuff is coming via the <a href="/blog">blog</a>.</div>
+        <br><br>
+        <div class="container">special thanks to <a href= 'http://www.initializr.com/'>initilizr</a> for some of the templating used on this site.</div></div>
       </footer>
       <hr>
       <hr>

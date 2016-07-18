@@ -36,8 +36,8 @@ class Availibility_order(Form):
 
 class Data_set_order(Form):
     """this will build out the final data set from the data in the form declared above"""
-    indicators = SelectMultipleField('Indicators availible for your section here', coerce=str, choices=[('no data','no data')])
-    Email = StringField('If you\'d like an email with the data please enter your address here. <font size="1">(the data will be sent here in CSV format)</font> &nbsp  &nbsp', 
+    indicators = SelectMultipleField('Indicators availible', coerce=str, choices=[('no data','no data')])
+    Email = StringField('<font size="1">If you\'d like an email with the data please enter your address here. (the data will be sent here in CSV format)</font> &nbsp  &nbsp', 
              validators=[
              Optional(),
              Length(1,120),

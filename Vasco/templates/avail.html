@@ -5,37 +5,41 @@
 <style type="text/css">
 select {
     width:650px;
-}</style>
+}
+</style>
 {%endblock%}
 <!-- information on these variables can be found in Vasco\views.py-->
 {% block content %}
     <div class="jumbotron">
       <div class="container">
-        <h1>Vasco de Data</h1>
-        <br>
-        {{final}}
-        <br><br>
-          <h2> Public data that is {{ htwo }} </h2>
+        <img src="/static/img/Vasco.jpg" height="165" width="175">
+          <br><br>
+          <h3>Availbe data below. Enjoy!</h3>
+          <br><br>
+          The following data points have been recorded for at least one of the selected countries and years.
           <br><br><br>
-          The following data points have been recorded for at least one (and likely for some) of the selected countries and years
-          <br>
-          If you dont notice the page starting to load the email to send you, your data set might be to big. Consider a smaller selection first. The data will also be sent directly as a download, submit your request again if the download does not start instantly.
           <form id="main_form" action="" method="post">
             {{indic_form.hidden_tag()}}
                 <table>
                 <tr>{{ render_field(indic_form.indicators, size=35) }}</tr>
+                <br>
                 <tr>{{ render_field(indic_form.Email, size=35) }}</tr>
                 <!--
                 <tr>{{ render_field(indic_form.send_descriptions, size=15) }}</tr>
                 descriptions are not being added to the final data set correctly, taking this out for now
                 -->
-                <div id="loading">take your pick</div>
+                <br>
                     </table>
-                    <br><br><br><br>
+                    <br><br>
                     <tr class= "submit" align="center">
                         <td></td>
-                        <td><button type='submit'class="btn btn-success" align="center">submit  indicators</button></td>
-                    </tr> 
+                        <td><button type='submit'class="btn btn-success" align="center">Get the data</button></td>
+                    </tr>
+                    <br><br>
+                    <tr><em><div id="loading">status: ready when you are!</div></em></tr> 
                 </table>
             </form>
+            <br><br>
+           Please submit your request again if the download does not start shortly. 
+           <br>It will be in CSV format.
 {% endblock %}

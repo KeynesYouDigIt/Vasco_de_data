@@ -13,6 +13,10 @@
         <br>
           <h2> Public data that is {{ htwo }} </h2>
           <br>
+          <em>sources from which Vasco is currently pulling and cleanding data</em> 
+          <br><br>
+          <a href="https://datahelpdesk.worldbank.org/knowledgebase/topics/125589">The World Bank </a>| <a href="http://hdr.undp.org/en/data">United Nations </a>
+          <br><br><br>
           <hr>
           <br>
           <em>data has been gathered for the following countries </em>
@@ -21,12 +25,13 @@
           {{ c }} | 
           {% endfor%}
           <br><br>
+          <hr>
+          <br>
           <h3>Please select a Country and a Year to see indicator availibility</h3>
           <br>
           <section>
-          <br>
-          hold the ctrl button or click and drag to select more than one.
-          <br><br><br><br>
+          <em>hold the ctrl button or click and drag to select more than one.</em>
+          <br><br><br>
           <table>
             <form id="main_form" action="" method="post">
                 {{avail_form.hidden_tag()}}
@@ -39,9 +44,10 @@
                     <br><br><br><br>
                     <tr class= "submit" align="center">
                         <td></td>
-                        <td><button type='submit'class="btn btn-success" align="center"><img src="static/img/DOIT.jpg" width="90" height="60" ></button></td>
+                        <td><button type='submit'class="btn btn-success" align="center">See indicators availible</button></td>
                     </tr>
-                    <tr><div id="loading">ready when you are!</div></tr>
+                    <br><br>
+                    <tr><em><div id="loading">status: ready when you are!</div></em></tr>
                 </table>
             </form>
     </section>
