@@ -25,6 +25,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+set_local.py
 
 Vasco_data_set
 Vasco_data_set.csv
