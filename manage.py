@@ -6,7 +6,6 @@ from flask.ext.script import Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 
 #on switch
-app = create_app(os.getenv('SET_ENV') or 'prod')
 manager = Manager(app)
 
 #migrations
@@ -34,4 +33,4 @@ def list_routes():
         print line
 
 if __name__ == '__main__':
-    manager.run(host='0.0.0.0', port=5000)
+    manager.run()

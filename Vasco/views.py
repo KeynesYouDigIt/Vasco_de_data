@@ -1,10 +1,10 @@
 from flask import render_template, url_for, request, redirect, flash, abort, Response
 from sqlalchemy.sql import text
 from datetime import datetime
-from Vasco import *
-from Vasco.models import *
-from Vasco.order_takers import *
+import Vasco
+from Vasco import app
 import pandas as pd
+import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
@@ -18,9 +18,13 @@ the public data APIs and stores the data in a Postgres database for easy retriva
 @app.route('/')
 @app.route('/index', methods=['GET','POST'])
 def ind():
-    avail_form=Availibility_order()
+    """
+    This is the home page, it welcomes the user and builds a form from
+    Vasco.
+    """
+    avail_form=Vasco.order_takers.Availibility_order()
     try:
-        get=get_countries_etld()
+        get=Vasco.order_takers.get_countries_etld()
         #above is tuples, not just list. Below makes a list.
         countries_etld=[]
         for country_tuple in get:
@@ -31,8 +35,6 @@ def ind():
         order_y=avail_form.years.data
         order_c=avail_form.countries.data
         return redirect(url_for('show_avail', order_y=order_y, order_c=order_c))
-    else:
-        flash('try again!')
 
     return render_template('home.html', 
         htwo='Clean and Uniform',
@@ -41,19 +43,17 @@ def ind():
         avail_form=avail_form
         )
 
-@app.route('/blog')
-def blog_it():
-    #the database is a bit overloaded at the moment with the actual data. blogging solution is on my schedule for september.
-    title='Welcome!'
-    post='blog content coming September 2016.'
-    return render_template('blog.html',
-        post=post,
-        post_title=title
-        )
-
-
 @app.route('/showmedata/<order_y>___<order_c>', methods=['GET','POST'])
 def show_avail(order_y,order_c):
+    """
+    This page appears after submitting a form on the home page with
+    a list of indicators that exist for at least one combination 
+    of years and countries requested.
+
+    Upon submitting this form, the final data set is built 
+    and sent to the client's browser for download.
+
+    """
     final='Please select. don\'t be scared if the list is long! for now you can hit ctrl + f to search on most browsers. \n by the end of this year, there will be a smoother selection experience that will help you find your data.' 
     #first step is to take years and countries and turn the strings back to lists, then select all valid data accordingly.
     order_y=order_y.replace("'","").strip('[').strip(']').split(',')
@@ -61,12 +61,16 @@ def show_avail(order_y,order_c):
     order_c=[x.strip() for x in order_c]
     order_y=[x.encode('ascii') for x in order_y]
     order_c=[x.encode('ascii') for x in order_c]
+
+    #the years and countries are now ready to be based as a variable to our db querey to get the availible indicators.
     first_query = """SELECT * FROM literal 
                 WHERE year IN :years 
                 AND ent_id IN (select id from ent where name in  :names)"""
     
-    full_data_points = db.engine.execute(text(first_query), {'years': tuple(order_y),'names': tuple(order_c)}).fetchall()
+    full_data_points = Vasco.db.engine.execute(text(first_query), 
+        {'years': tuple(order_y),'names': tuple(order_c)}).fetchall()
     data_points_as_tuples=[]
+    #WTForms is built on tuples, not lists. making tuples to populate here.
     for point in full_data_points:
         if len(point) > 0:
             points=(str(point[4]),str(point[4]))
@@ -76,12 +80,12 @@ def show_avail(order_y,order_c):
                 pass
         else:
             pass
-    empty_indic_form=Data_set_order()
-    empty_indic_form.indicators.choices=data_points_as_tuples
-    indic_form=empty_indic_form
-    get_email='then I\'ll get your email here :)'
+    indic_form=Vasco.order_takers.Data_set_order()
+    indic_form.indicators.choices=data_points_as_tuples
+    #the form is now built based on the indicators in the database.
 
-    if empty_indic_form.validate_on_submit():
+    if indic_form.validate_on_submit():
+        #the indicators now selected, we can build the necessary query to finish the data set
         query = """SELECT name, year, value, display_name
                FROM literal
                INNER JOIN ent ON ent_id = ent.id
@@ -89,8 +93,13 @@ def show_avail(order_y,order_c):
                  AND name IN :name
                  AND year IN :years
                  """
-        data_return = db.engine.execute(text(query), {'display_name': tuple(indic_form.indicators.data),'name': tuple(order_c), 'years': tuple(order_y)}).fetchall()
+        data_return = Vasco.db.engine.execute(text(query), 
+            {'display_name': tuple(indic_form.indicators.data),
+            'name': tuple(order_c), 
+            'years': tuple(order_y)}).fetchall()
         final_list=[]
+        #this will be a list of dictionaries, with each dict as a single data point.
+        #Pandas converts this seamlessly to a DataFrame
         for toople in data_return:
             final_point={}
             final_point['Country']=toople[0]
@@ -112,7 +121,8 @@ def show_avail(order_y,order_c):
                 FROM meta
                 WHERE p_name IN :display_name
                  """
-            data_return_desc = db.engine.execute(text(query), {'display_name': tuple(indic_form.indicators.data)}).fetchall()
+            data_return_desc = Vasco.db.engine.execute(text(query), 
+                {'display_name': tuple(indic_form.indicators.data)}).fetchall()
         else:
             data_return_desc = ''
         desc_list=[]
@@ -123,6 +133,7 @@ def show_avail(order_y,order_c):
         final=final_list
         final_df=pd.DataFrame(final)
         descriptions_df=pd.DataFrame(desc_list)
+        #next few lines clean and present the DataFrame properly
         years_column=final_df.pop('Year')
         countries_column=final_df.pop('Country')
         final_df.insert(0, 'Year', years_column)
@@ -130,6 +141,7 @@ def show_avail(order_y,order_c):
         final_df.set_index(['Country','Year'])
         final_df=final_df.append(descriptions_df)
         filename='Vasco_data_set'
+        #keep renaming file until name is unique and send when unique
         while filename in os.listdir(os.getcwd()):
             increment=0
             filename=filename+(str(increment))
@@ -139,12 +151,13 @@ def show_avail(order_y,order_c):
         with open(filename, 'r') as fp:
             read_csv=fp.read()
 
-        if empty_indic_form.Email.data:
+        #email the data if requested
+        if indic_form.Email.data:
             msg = MIMEMultipart()
             msg['Subject'] = 'Your dataset from Vasco de Data'
             
             sndr='VascoSendsData@gmail.com'
-            recvr=str(empty_indic_form.Email.data)
+            recvr=str(indic_form.Email.data)
             
             msg['From'] = sndr
             msg['To'] = recvr
@@ -165,17 +178,32 @@ def show_avail(order_y,order_c):
             server.login(username,password)
             server.sendmail(from_addr=sndr, to_addrs=recvr, msg=msg.as_string())
             server.quit()
+        #send file as direct response
         return Response(read_csv, 
                 mimetype='text/csv',
                 headers={"Content-disposition":
                  "attachment; filename="+filename})
-        #return redirect(url_for('ind'))
 
     return render_template('avail.html', 
         htwo='Clean and Uniform',
         indic_form=indic_form,
         final=final
         )
+
+
+@app.route('/blog')
+def blog_it():
+    """
+    The blog content is scheduled for September,
+    will appear on this page
+    """
+    title='Welcome!'
+    post='blog content coming September 2016.'
+    return render_template('blog.html',
+        post=post,
+        post_title=title
+        )
+
 
 @app.errorhandler(403)
 def forbidden(e):

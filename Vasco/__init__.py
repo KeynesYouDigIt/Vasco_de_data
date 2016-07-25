@@ -4,13 +4,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask.ext.moment import Moment
 from flask_debugtoolbar import DebugToolbarExtension
 
+
 basedir = os.getcwd()
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.urandom(24)
 app.config['DEBUG'] = False
+
+#
+import set_local
+set_local.local_db_and_debug()
+#
+
+app.config['SECRET_KEY'] = os.urandom(24)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] =  os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 #blueprints for moduarization of the app and its functions coming soon!
 

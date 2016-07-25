@@ -6,8 +6,8 @@ except ImportError:
 config = {
     'description': 'Vasco de Data',
     'author': 'altereeeeego@gmail.com',
-    'url': 'lol not quite yet',
-    'version': 'not even 0.1',
+    'url': 'https://vasco-de-data.herokuapp.com/index',
+    'version': '0.0.1',
     'install_requires': ['nose'],
     'packages': ['NAME'],['os'],['lxml'],['bs4'],['pandas'],['numpy'],['json'],['requests'],['io'],['urllib2']
     'scripts': [],

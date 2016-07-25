@@ -3,15 +3,30 @@ from sqlalchemy import desc
 from Vasco import db
 
 """
-The models below were able to connect to and be created in my Postgres database, and stored the test data in /tests/
-They will be used to store parsed results from various public data APIs
+The models below are created in a Postgres database.
+
+To work with them outside of the production database,
+create a valid pg database connection string
+and set it via os.environ['DATABASE_URL']='your string here'
+
+The connection string will be something like-
+postgresql://user:password@localhost:5432/DBNAME
+
+Then run db.create_all()
+
+To start populating the data, run the procs stored in 
+Vasco de Data\\Vasco\\ETL
 
 see a full schema at
 Vasco de Data\\archive\\diagrams\\db schema
 """
 
 class Entity(db.Model):
-    '''An entity is  a country, state, or any other body *about which* there may be data.'''
+    '''
+    An entity is  a country, state, 
+    or any other body about which there may be data.
+    Data points about entities are refered to as indicators.
+    '''
     __tablename__ = 'ent'
     id = db.Column(db.Integer, primary_key=True)
     level = db.Column(db.Text, nullable=False)
@@ -29,7 +44,13 @@ class Entity(db.Model):
         return "<this is '{}': it is a '{}' || db id is '{}'>".format(self.name, self.level, self.id)
 
 class Meta_indicator_data(db.Model):
-    '''this tabe holds in depth data on indictor descriptions and sources'''
+    '''
+    There is significant data about the indicators that should be
+    storable for each new indicator.
+
+    This table stores the name, description, and other categorization
+    data for each indicator.
+    '''
     __tablename__ = 'meta'
     id = db.Column(db.Integer, primary_key=True)
     p_name = db.Column(db.Text, nullable=False, unique=True)
@@ -45,7 +66,10 @@ class Meta_indicator_data(db.Model):
 
 
 class Literal_data(db.Model):
-    '''this stores only the literal data, the year, and where to get the corresponding entity and meta data.'''
+    '''
+    This table stores only the literal data, the year, and foreign keys
+    used to retrieve the corresponding entity and meta data.
+    '''
     __tablename__ = 'literal'
     id = db.Column(db.Integer, primary_key=True)
     ent_id = db.Column(db.Integer, db.ForeignKey('ent.id'))
@@ -55,11 +79,15 @@ class Literal_data(db.Model):
     meta_id = db.Column(db.Integer, db.ForeignKey('meta.id'))
 
 
+"""
+I plan on releasing functionality that stores data sets and makes them
+easy to retrieve and share. This is not part of the current release,
+but below is the start of the code if anyone wants to start working
+on it!
 
 class Saved_data_sets(object):
-    """In the early release days, i will allow storing of some shared data sets to give users and idea where to start
-    this table also serves as a boiler plate from which I can build a robust login and save data sets system"""
     id = db.Column(db.Integer, primary_key=True)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     comments = db.Column(db.Text, nullable=False)
     tags = db.Column(db.Text, nullable=False)
+    """
