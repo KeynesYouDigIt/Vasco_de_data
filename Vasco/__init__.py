@@ -10,11 +10,6 @@ app = Flask(__name__)
 
 app.config['DEBUG'] = False
 
-#
-import set_local
-set_local.local_db_and_debug()
-#
-
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
