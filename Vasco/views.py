@@ -1,3 +1,6 @@
+'''Pretty straight forward flask middle layer, some of the actual work
+and most of the actual calls against the db are done in this file'''
+
 from flask import render_template, url_for, request, redirect, flash, abort, Response
 from sqlalchemy.sql import text
 from datetime import datetime
@@ -10,18 +13,11 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 
-
-'''this is the only current connection between the front end an the data itself. 
-Within the next couple weeks, I plan on replacing it with a robust system that calls 
-the public data APIs and stores the data in a Postgres database for easy retrival.'''
-
 @app.route('/')
 @app.route('/index', methods=['GET','POST'])
 def ind():
-    """
-    This is the home page, it welcomes the user and builds a form from
-    Vasco.
-    """
+    """This is the home page, it welcomes the user and builds a form from
+    Vasco."""
     avail_form=Vasco.order_takers.Availibility_order()
     try:
         get=Vasco.order_takers.get_countries_etld()

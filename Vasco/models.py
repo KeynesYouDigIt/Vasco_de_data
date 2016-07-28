@@ -1,32 +1,24 @@
-from datetime import datetime
-from sqlalchemy import desc
-from Vasco import db
-
 """
 The models below are created in a Postgres database.
 
 To work with them outside of the production database,
 create a valid pg database connection string
 and set it via os.environ['DATABASE_URL']='your string here'
-
 The connection string will be something like-
 postgresql://user:password@localhost:5432/DBNAME
-
-Then run db.create_all()
-
-To start populating the data, run the procs stored in 
+Then run db.create_all() To start populating the data, run the procs stored in 
 Vasco de Data\\Vasco\\ETL
 
-see a full schema at
+see a full schema diagrame at
 Vasco de Data\\archive\\diagrams\\db schema
 """
+from Vasco import db
 
 class Entity(db.Model):
-    '''
-    An entity is  a country, state, 
+    '''An entity is  a country, state, 
     or any other body about which there may be data.
-    Data points about entities are refered to as indicators.
-    '''
+    Data points about entities are refered to as indicators.'''
+
     __tablename__ = 'ent'
     id = db.Column(db.Integer, primary_key=True)
     level = db.Column(db.Text, nullable=False)
@@ -44,13 +36,10 @@ class Entity(db.Model):
         return "<this is '{}': it is a '{}' || db id is '{}'>".format(self.name, self.level, self.id)
 
 class Meta_indicator_data(db.Model):
-    '''
-    There is significant data about the indicators that should be
-    storable for each new indicator.
+    '''There is significant data about the indicators that should be
+    storable for each new indicator. This table stores the name, description, and other categorization
+    data for each indicator.'''
 
-    This table stores the name, description, and other categorization
-    data for each indicator.
-    '''
     __tablename__ = 'meta'
     id = db.Column(db.Integer, primary_key=True)
     p_name = db.Column(db.Text, nullable=False, unique=True)
@@ -66,10 +55,8 @@ class Meta_indicator_data(db.Model):
 
 
 class Literal_data(db.Model):
-    '''
-    This table stores only the literal data, the year, and foreign keys
-    used to retrieve the corresponding entity and meta data.
-    '''
+    '''This table stores only the literal data, the year, and foreign keys
+    used to retrieve the corresponding entity and meta data.'''
     __tablename__ = 'literal'
     id = db.Column(db.Integer, primary_key=True)
     ent_id = db.Column(db.Integer, db.ForeignKey('ent.id'))

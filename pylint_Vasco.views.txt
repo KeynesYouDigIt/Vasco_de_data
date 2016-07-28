@@ -1,0 +1,299 @@
+************* Module Vasco.views
+C: 14, 0: Trailing whitespace (trailing-whitespace)
+C: 15, 0: Trailing whitespace (trailing-whitespace)
+C: 19, 0: Exactly one space required after comma
+@app.route('/index', methods=['GET','POST'])
+                                   ^ (bad-whitespace)
+C: 25, 0: Exactly one space required around assignment
+    avail_form=Vasco.order_takers.Availibility_order()
+              ^ (bad-whitespace)
+C: 27, 0: Exactly one space required around assignment
+        get=Vasco.order_takers.get_countries_etld()
+           ^ (bad-whitespace)
+C: 29, 0: Exactly one space required around assignment
+        countries_etld=[]
+                      ^ (bad-whitespace)
+C: 33, 0: Exactly one space required around assignment
+        countries_etld='nothing yet'
+                      ^ (bad-whitespace)
+C: 35, 0: Exactly one space required around assignment
+        order_y=avail_form.years.data
+               ^ (bad-whitespace)
+C: 36, 0: Exactly one space required around assignment
+        order_c=avail_form.countries.data
+               ^ (bad-whitespace)
+C: 39, 0: Trailing whitespace (trailing-whitespace)
+C: 40, 0: Wrong continued indentation (add 19 spaces).
+        htwo='Clean and Uniform',
+        ^                  | (bad-continuation)
+C: 41, 0: Wrong continued indentation (add 19 spaces).
+        countries_etld=countries_etld,
+        ^                  | (bad-continuation)
+C: 42, 0: Wrong continued indentation (add 19 spaces).
+        usr='!', 
+        ^                  | (bad-continuation)
+C: 42, 0: Trailing whitespace (trailing-whitespace)
+C: 43, 0: Wrong continued indentation (add 19 spaces).
+        avail_form=avail_form
+        ^                  | (bad-continuation)
+C: 44, 0: Wrong continued indentation (add 18 spaces).
+        )
+        ^                 | (bad-continuation)
+C: 46, 0: Exactly one space required after comma
+@app.route('/showmedata/<order_y>___<order_c>', methods=['GET','POST'])
+                                                              ^ (bad-whitespace)
+C: 47, 0: Exactly one space required after comma
+def show_avail(order_y,order_c):
+                      ^ (bad-whitespace)
+C: 50, 0: Trailing whitespace (trailing-whitespace)
+C: 53, 0: Trailing whitespace (trailing-whitespace)
+C: 57, 0: Trailing whitespace (trailing-whitespace)
+C: 57, 0: Line too long (230/100) (line-too-long)
+C: 57, 0: Exactly one space required around assignment
+    final='Please select. don\'t be scared if the list is long! for now you can hit ctrl + f to search on most browsers. \n by the end of this year, there will be a smoother selection experience that will help you find your data.' 
+         ^ (bad-whitespace)
+C: 58, 0: Line too long (122/100) (line-too-long)
+C: 59, 0: Exactly one space required around assignment
+    order_y=order_y.replace("'","").strip('[').strip(']').split(',')
+           ^ (bad-whitespace)
+C: 59, 0: Exactly one space required after comma
+    order_y=order_y.replace("'","").strip('[').strip(']').split(',')
+                               ^ (bad-whitespace)
+C: 60, 0: Exactly one space required around assignment
+    order_c=order_c.replace("'","").strip('[').strip(']').split(',')
+           ^ (bad-whitespace)
+C: 60, 0: Exactly one space required after comma
+    order_c=order_c.replace("'","").strip('[').strip(']').split(',')
+                               ^ (bad-whitespace)
+C: 61, 0: Exactly one space required around assignment
+    order_c=[x.strip() for x in order_c]
+           ^ (bad-whitespace)
+C: 62, 0: Exactly one space required around assignment
+    order_y=[x.encode('ascii') for x in order_y]
+           ^ (bad-whitespace)
+C: 63, 0: Exactly one space required around assignment
+    order_c=[x.encode('ascii') for x in order_c]
+           ^ (bad-whitespace)
+C: 65, 0: Line too long (118/100) (line-too-long)
+C: 66, 0: Trailing whitespace (trailing-whitespace)
+C: 69, 0: Trailing whitespace (trailing-whitespace)
+C: 70, 0: Trailing whitespace (trailing-whitespace)
+C: 71, 0: Wrong continued indentation (add 39 spaces).
+        {'years': tuple(order_y),'names': tuple(order_c)}).fetchall()
+        ^                                      | (bad-continuation)
+C: 71, 0: Exactly one space required after comma
+        {'years': tuple(order_y),'names': tuple(order_c)}).fetchall()
+                                ^ (bad-whitespace)
+C: 72, 0: Exactly one space required around assignment
+    data_points_as_tuples=[]
+                         ^ (bad-whitespace)
+C: 76, 0: Exactly one space required around assignment
+            points=(str(point[4]),str(point[4]))
+                  ^ (bad-whitespace)
+C: 76, 0: Exactly one space required after comma
+            points=(str(point[4]),str(point[4]))
+                                 ^ (bad-whitespace)
+C: 83, 0: Exactly one space required around assignment
+    indic_form=Vasco.order_takers.Data_set_order()
+              ^ (bad-whitespace)
+C: 84, 0: Exactly one space required around assignment
+    indic_form.indicators.choices=data_points_as_tuples
+                                 ^ (bad-whitespace)
+C: 96, 0: Trailing whitespace (trailing-whitespace)
+C: 97, 0: Wrong continued indentation (add 34 spaces).
+            {'display_name': tuple(indic_form.indicators.data),
+            ^                                 | (bad-continuation)
+C: 98, 0: Wrong continued indentation (add 1 space).
+            'name': tuple(order_c), 
+            ^| (bad-continuation)
+C: 98, 0: Trailing whitespace (trailing-whitespace)
+C: 99, 0: Wrong continued indentation (add 1 space).
+            'years': tuple(order_y)}).fetchall()
+            ^| (bad-continuation)
+C:100, 0: Exactly one space required around assignment
+        final_list=[]
+                  ^ (bad-whitespace)
+C:104, 0: Exactly one space required around assignment
+            final_point={}
+                       ^ (bad-whitespace)
+C:105, 0: Exactly one space required around assignment
+            final_point['Country']=toople[0]
+                                  ^ (bad-whitespace)
+C:106, 0: Exactly one space required around assignment
+            final_point['Year']=toople[1]
+                               ^ (bad-whitespace)
+C:107, 0: Exactly one space required around assignment
+            final_point[toople[3]]=toople[2]
+                                  ^ (bad-whitespace)
+C:109, 0: Exactly one space required around comparison
+            if len(final_list)>0:
+                              ^ (bad-whitespace)
+C:110, 0: Exactly one space required after comma
+                for i,f in enumerate(final_list):
+                     ^ (bad-whitespace)
+C:111, 0: Exactly one space required around comparison
+                    if final_point['Country']==f['Country'] and final_point['Year']==f['Year']:
+                                             ^^ (bad-whitespace)
+C:111, 0: Exactly one space required around comparison
+                    if final_point['Country']==f['Country'] and final_point['Year']==f['Year']:
+                                                                                   ^^ (bad-whitespace)
+C:119, 0: Exactly one space required around comparison
+        if indic_form.send_descriptions.data==True:
+                                            ^^ (bad-whitespace)
+C:124, 0: Trailing whitespace (trailing-whitespace)
+C:125, 0: Wrong continued indentation (add 39 spaces).
+                {'display_name': tuple(indic_form.indicators.data)}).fetchall()
+                ^                                      | (bad-continuation)
+C:128, 0: Exactly one space required around assignment
+        desc_list=[]
+                 ^ (bad-whitespace)
+C:130, 0: Exactly one space required around assignment
+            desc_point={}
+                      ^ (bad-whitespace)
+C:131, 0: Exactly one space required around assignment
+            desc_point[toople[0]]=toople[1]
+                                 ^ (bad-whitespace)
+C:133, 0: Exactly one space required around assignment
+        final=final_list
+             ^ (bad-whitespace)
+C:134, 0: Exactly one space required around assignment
+        final_df=pd.DataFrame(final)
+                ^ (bad-whitespace)
+C:135, 0: Exactly one space required around assignment
+        descriptions_df=pd.DataFrame(desc_list)
+                       ^ (bad-whitespace)
+C:137, 0: Exactly one space required around assignment
+        years_column=final_df.pop('Year')
+                    ^ (bad-whitespace)
+C:138, 0: Exactly one space required around assignment
+        countries_column=final_df.pop('Country')
+                        ^ (bad-whitespace)
+C:141, 0: Exactly one space required after comma
+        final_df.set_index(['Country','Year'])
+                                     ^ (bad-whitespace)
+C:142, 0: Exactly one space required around assignment
+        final_df=final_df.append(descriptions_df)
+                ^ (bad-whitespace)
+C:143, 0: Exactly one space required around assignment
+        filename='Vasco_data_set'
+                ^ (bad-whitespace)
+C:146, 0: Exactly one space required around assignment
+            increment=0
+                     ^ (bad-whitespace)
+C:147, 0: Exactly one space required around assignment
+            filename=filename+(str(increment))
+                    ^ (bad-whitespace)
+C:148, 0: Exactly one space required around assignment
+            increment+=1
+                     ^^ (bad-whitespace)
+C:149, 0: Exactly one space required around assignment
+        filename=filename+'.csv'
+                ^ (bad-whitespace)
+C:150, 0: Exactly one space required after comma
+        final_df.to_csv(filename,header=True,engine='python')
+                                ^ (bad-whitespace)
+C:150, 0: Exactly one space required after comma
+        final_df.to_csv(filename,header=True,engine='python')
+                                            ^ (bad-whitespace)
+C:152, 0: Exactly one space required around assignment
+            read_csv=fp.read()
+                    ^ (bad-whitespace)
+C:158, 0: Trailing whitespace (trailing-whitespace)
+C:159, 0: Exactly one space required around assignment
+            sndr='VascoSendsData@gmail.com'
+                ^ (bad-whitespace)
+C:160, 0: Exactly one space required around assignment
+            recvr=str(indic_form.Email.data)
+                 ^ (bad-whitespace)
+C:161, 0: Trailing whitespace (trailing-whitespace)
+C:164, 0: Exactly one space required around assignment
+            filename=str(filename)
+                    ^ (bad-whitespace)
+C:165, 0: Exactly one space required after comma
+            attachment = MIMEBase('csv','csv')
+                                       ^ (bad-whitespace)
+C:168, 0: Trailing whitespace (trailing-whitespace)
+C:169, 0: Wrong continued indentation (add 18 spaces).
+                "attachment", 
+                ^                 | (bad-continuation)
+C:169, 0: Trailing whitespace (trailing-whitespace)
+C:170, 0: Wrong continued indentation (add 18 spaces).
+                filename=filename)
+                ^                 | (bad-continuation)
+C:175, 0: Exactly one space required after comma
+            server = smtplib.SMTP('smtp.gmail.com',587)
+                                                  ^ (bad-whitespace)
+C:178, 0: Exactly one space required after comma
+            server.login(username,password)
+                                 ^ (bad-whitespace)
+C:182, 0: Trailing whitespace (trailing-whitespace)
+C:183, 0: Wrong continued indentation (add 8 spaces).
+                mimetype='text/csv',
+                ^       | (bad-continuation)
+C:184, 0: Wrong continued indentation (add 8 spaces).
+                headers={"Content-disposition":
+                ^       | (bad-continuation)
+C:185, 0: Wrong hanging indentation in dict value.
+                 "attachment; filename="+filename})
+                 ^       |   | (bad-continuation)
+C:187, 0: Trailing whitespace (trailing-whitespace)
+C:188, 0: Wrong continued indentation (add 19 spaces).
+        htwo='Clean and Uniform',
+        ^                  | (bad-continuation)
+C:189, 0: Wrong continued indentation (add 19 spaces).
+        indic_form=indic_form,
+        ^                  | (bad-continuation)
+C:190, 0: Wrong continued indentation (add 19 spaces).
+        final=final
+        ^                  | (bad-continuation)
+C:191, 0: Wrong continued indentation (add 18 spaces).
+        )
+        ^                 | (bad-continuation)
+C:200, 0: Exactly one space required around assignment
+    title='Welcome!'
+         ^ (bad-whitespace)
+C:201, 0: Exactly one space required around assignment
+    post='blog content coming September 2016.'
+        ^ (bad-whitespace)
+C:203, 0: Wrong continued indentation (add 19 spaces).
+        post=post,
+        ^                  | (bad-continuation)
+C:204, 0: Wrong continued indentation (add 19 spaces).
+        post_title=title
+        ^                  | (bad-continuation)
+C:205, 0: Wrong continued indentation (add 18 spaces).
+        )
+        ^                 | (bad-continuation)
+C:220, 0: Final newline missing (missing-final-newline)
+C:  1, 0: Missing module docstring (missing-docstring)
+W: 16,-1: String statement has no effect (pointless-string-statement)
+W: 32, 4: No exception type(s) specified (bare-except)
+R: 33, 8: Redefinition of countries_etld type from list to str (redefined-variable-type)
+R: 47, 0: Too many local variables (35/15) (too-many-locals)
+C:110,22: Invalid variable name "f" (invalid-name)
+C:119,11: Comparison to True should be just 'expr' or 'expr is True' (singleton-comparison)
+C:151,36: Invalid variable name "fp" (invalid-name)
+R:133, 8: Redefinition of final type from str to list (redefined-variable-type)
+R:142, 8: Redefinition of final_df type from pandas.core.frame.DataFrame to pandas.core.series.Series (redefined-variable-type)
+R: 47, 0: Too many branches (17/12) (too-many-branches)
+R: 47, 0: Too many statements (82/50) (too-many-statements)
+C:209, 0: Invalid argument name "e" (invalid-name)
+C:209, 0: Missing function docstring (missing-docstring)
+W:209,14: Unused argument 'e' (unused-argument)
+C:214, 0: Invalid argument name "e" (invalid-name)
+C:214, 0: Missing function docstring (missing-docstring)
+W:214,19: Unused argument 'e' (unused-argument)
+C:219, 0: Invalid argument name "e" (invalid-name)
+C:219, 0: Missing function docstring (missing-docstring)
+W:219,26: Unused argument 'e' (unused-argument)
+W:  1, 0: Unused flash imported from flask (unused-import)
+W:  1, 0: Unused abort imported from flask (unused-import)
+W:  1, 0: Unused request imported from flask (unused-import)
+W:  3, 0: Unused datetime imported from datetime (unused-import)
+C:  3, 0: standard import "from datetime import datetime" comes before "from flask import render_template, url_for, request, redirect, flash, abort, Response" (wrong-import-order)
+C:  6, 0: external import "import pandas as pd" comes before "import Vasco" (wrong-import-order)
+C:  7, 0: standard import "import os" comes before "from flask import render_template, url_for, request, redirect, flash, abort, Response" (wrong-import-order)
+C:  8, 0: standard import "import smtplib" comes before "from flask import render_template, url_for, request, redirect, flash, abort, Response" (wrong-import-order)
+C:  9, 0: standard import "from email.mime.multipart import MIMEMultipart" comes before "from flask import render_template, url_for, request, redirect, flash, abort, Response" (wrong-import-order)
+C: 10, 0: standard import "from email.mime.base import MIMEBase" comes before "from flask import render_template, url_for, request, redirect, flash, abort, Response" (wrong-import-order)
+C: 11, 0: standard import "from email import encoders" comes before "from flask import render_template, url_for, request, redirect, flash, abort, Response" (wrong-import-order)
