@@ -1,3 +1,9 @@
+'''This is the core ETL process based on the original API. 
+it uniformilizes and loads indicator data'''
+
+print 'Please be patient while the interface loads, \n'
+' these procs use various python libraries that can take a moment to boot.'
+
 import os
 import datetime
 import lxml
@@ -12,12 +18,10 @@ from urllib2 import urlopen
 from Vasco.models import *
 from Vasco.order_takers import get_countries_etld
 
-#from Scraper_for_UN_indicator_descriptions import UNHDR_scrape_description
-
-'''This is the core ETL process based on the original API. it uniformilizes and loads indicat'''
-
-def get_supporting_data():
-    #the below gets a list a Dictionary of ISO codes and their corresponding countries
+#_#def get_supporting_data():
+def scrape_ISO_codes():
+    '''the below gets a tuple of a Dictionary of ISO codes and their 
+    corresponding countries and the same dictionary with keys and values reversed'''
     html = urlopen('https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3').read()
     BS = BeautifulSoup(html, "lxml")
     tds = BS.find_all('td')
@@ -28,7 +32,6 @@ def get_supporting_data():
         herp_it.append(it)
 
     herp_it = np.asarray(herp_it)
-    global iso_dic
     iso_dic = {}
     for t in herp_it:
         s_td = tds[t].string
@@ -47,16 +50,20 @@ def get_supporting_data():
     while add_this_year < 2015:
         add_this_year +=1
         Years.append(add_this_year)
-
-    #the below reverses the ISO code dictionary in a new object to get country name using the ISO code
-    global iso_dic_code_is_key
     iso_dic_code_is_key={v: k for k, v in iso_dic.items()}
 
+    return iso_dic, iso_dic_code_is_key
+
+
+
+
+def list_indic_wb():
     #the below gets a list of dictionaries that constitutes a full library of World Bank indicators
     #the indicators are simply represented by meta data which is converted into actual indicator names below (line 91 and on)
 
     ###by generating its own iterator it violates 7 PEP 279, I am hoping to fix that soon.
     ###I should be able to test and remove of the global calls soon, as this is not good practice long term.
+
     indi=rq.get('http://api.worldbank.org/indicators?format=json')
     jindi=indi.json()
     global wb_indi_list
@@ -97,11 +104,12 @@ def get_supporting_data():
 
 def get_countries():
     '''this gets and commits all countries and iso codes'''
-    for country in iso_dic:
+    ISOs = scrape_ISO_codes()[0]
+    for country in ISOs:
         camelot = Entity(
             level='Country', 
             name=country, 
-            iso_code=iso_dic[country]
+            iso_code=ISOs[country]
             )
         db.session.add(camelot)
     db.session.commit()
@@ -151,17 +159,12 @@ def get_meta_indicator_data():
             db.session.commit()
 
 
-def get_literal_indicators(countries=iso_dic_code_is_key.keys(), years=Years):
-    '''this is function is the begining of a project to make the original API (archive/Bartender_no_ui.py) modular and flexible. 
-    as stated in views.py, I plan on creating a robust system that calls the public data APIs and stores the data in a Postgres database.'''
+def get_literal_indicators(countries=scrape_ISO_codes()[1].keys(), years=Years):
+    '''this is function is the begining of a project to make the 
+    original API (archive/Bartender_no_ui.py) modular and flexible. 
+    As stated in views.py, I plan on creating a robust system that calls 
+    the public data APIs and stores the data in a Postgres database.'''
     
-    #below should be a list of ISO codes
-
-    '''
-    In [24]: len(iso_dic)
-    Out[24]: 249
-    0-15 already done
-    '''
     years=Years
 
 
@@ -337,7 +340,7 @@ already_got=get_countries_etld()
 
 already_got=[country[0] for country in already_got]
 
-get_these=raw_input('gimmie countries, by iso code, we need data for')
+get_these=raw_input('type countries, by iso code, we need data for, seperated by comma \n')
 
 get_these=get_these.split(',')
 
