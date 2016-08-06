@@ -2,10 +2,11 @@
 it uniformilizes and loads indicator data'''
 
 print 'Please be patient while the interface loads, \n'
-' these procs use various python libraries that can take a moment to boot.'
+print 'these functions use various python libraries that can take a moment to boot.'
 
 import os
 import datetime
+import time
 import lxml
 from bs4 import NavigableString
 from bs4 import BeautifulSoup
@@ -16,9 +17,8 @@ import requests as rq
 import urllib2 as url
 from urllib2 import urlopen
 from Vasco.models import *
-from Vasco.order_takers import get_countries_etld
+from Vasco.order_takers import get_countries_etld, create_years
 
-#_#def get_supporting_data():
 def scrape_ISO_codes():
     '''the below gets a tuple of a Dictionary of ISO codes and their 
     corresponding countries and the same dictionary with keys and values reversed'''
@@ -45,11 +45,6 @@ def scrape_ISO_codes():
             else:
                 pass
 
-    Years=[]
-    add_this_year=1989
-    while add_this_year < 2015:
-        add_this_year +=1
-        Years.append(add_this_year)
     iso_dic_code_is_key={v: k for k, v in iso_dic.items()}
 
     return iso_dic, iso_dic_code_is_key
@@ -57,49 +52,25 @@ def scrape_ISO_codes():
 
 
 
-def list_indic_wb():
+def get_worldbank_indicator_list():
     #the below gets a list of dictionaries that constitutes a full library of World Bank indicators
     #the indicators are simply represented by meta data which is converted into actual indicator names below (line 91 and on)
-
-    ###by generating its own iterator it violates 7 PEP 279, I am hoping to fix that soon.
-    ###I should be able to test and remove of the global calls soon, as this is not good practice long term.
-
     indi=rq.get('http://api.worldbank.org/indicators?format=json')
     jindi=indi.json()
-    global wb_indi_list
     wb_indi_list=jindi[1]
-    global wb_indi_it
-    wb_indi_it = []
-    it=-1
-    for i in wb_indi_list:
-        it += 1
-        wb_indi_it.append(it)
 
-    wb_indi_it=np.asarray(wb_indi_it)
+    return wb_indi_list
 
+
+
+def get_UN_indicator_dic():
     #the below gets a list of dictionaries that constitutes a full library of United Nations indicators
     #the indicators are simply represented by id numbers which are converted into actual indicator names below (line 91 and on)
     un_indi=rq.get('http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator')
     jun_indi=un_indi.json()
-    global UNHDR_indi_dic
     UNHDR_indi_dic=jun_indi['indicator_name']
-    global UNHDR_indi_list
-    UNHDR_indi_list=[]
-    for i in UNHDR_indi_dic:
-        si=str(i)
-        UNHDR_indi_list.append(si)
 
-    global UN_indi_it
-    UN_indi_it = []
-    it=-1
-    for i in UNHDR_indi_dic:
-        it += 1
-        UN_indi_it.append(it)
-
-    UN_indi_it=np.asarray(UN_indi_it)
-
-    ETL_logger = open('ETL_log_tests.txt', 'w')
-    ETL_logger.write('initial objects created and log started at' + str(datetime.now().utcnow()) + '\n')
+    return UNHDR_indi_dic
 
 
 def get_countries():
@@ -131,7 +102,9 @@ def get_meta_indicator_data():
             db.session.rollback()
             print ' %s skipped' % UN_indicator
     db.session.commit()
-    #NOTE this commit currently throws non fatal errors for indictors that are in the world bank set and have the same name (2-3 right now). Next data refresh tis will be debugged
+    
+    wb_indi_list=get_worldbank_indicator_list()
+    wb_indi_it=enumerate(wb_indi_list)
     for indicator in wb_indi_it:
         #try and except here is for indicators without topics (aka "families"), which throw index and key errors
         try:
@@ -159,41 +132,35 @@ def get_meta_indicator_data():
             db.session.commit()
 
 
-def get_literal_indicators(countries=scrape_ISO_codes()[1].keys(), years=Years):
+def get_literal_indicators(countries, years=create_years()):
     '''this is function is the begining of a project to make the 
     original API (archive/Bartender_no_ui.py) modular and flexible. 
     As stated in views.py, I plan on creating a robust system that calls 
     the public data APIs and stores the data in a Postgres database.'''
-    
-    years=Years
-
 
     order_countries=[countries]
     order_years=years
-
 
     #lines 95-165 parse the dictionaries above to check the availibility of every indicator for the specified Countries (or entities) and years
     #if the data exists, it is extracted
 
     wb_availibility_dic={}
-
     wb_checkiftheyhave_list=[]
-
     UNHDR_availibility_dic={}
-
     un_checkiftheyhave_list=[]
-
     mislist=[]
+    wb_indi_list=get_worldbank_indicator_list()
+    UN_indi_dic=get_UN_indicator_dic()
 
-    for wb_i in wb_indi_it:
+    for wb_i in enumerate(wb_indi_list):
         for c in order_countries:
             for y in order_years:
-                wb_checkiftheyhave_list.append([str(c),wb_i,str(y)])
+                wb_checkiftheyhave_list.append([str(c),wb_i[0],str(y[0])])
 
-    for UN_i in UN_indi_it:
+    for UN_i in enumerate(UN_indi_dic):
         for c in order_countries:
             for y in order_years:
-                un_checkiftheyhave_list.append([str(c),UN_i,str(y)])
+                un_checkiftheyhave_list.append([str(c),UN_i[0],str(y[0])])
 
     for wb in wb_checkiftheyhave_list:
         id_as_str=str(wb_indi_list[wb[1]]['id'])
@@ -244,7 +211,7 @@ def get_literal_indicators(countries=scrape_ISO_codes()[1].keys(), years=Years):
 
     mislist=[]
     for UN in un_checkiftheyhave_list:
-        id_as_str=UNHDR_indi_list[UN[1]]
+        id_as_str=UN_indi_dic.keys()[UN[1]]
         call='http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator_id/' + id_as_str + '/year/' + UN[2] + '/country_code/' + UN[0]
         ETL_logger.write('fething from UNHDR %s' % call)
         print 'fething from UNHDR : %s \n' % call
@@ -255,7 +222,7 @@ def get_literal_indicators(countries=scrape_ISO_codes()[1].keys(), years=Years):
             UN_avail_json=un_raw_response.json()
             try:
                 if type(UN_avail_json) == unicode:
-                    mislist.append(UNHDR_indi_dic[id_as_str])
+                    mislist.append(UN_indi_dic[id_as_str])
                     mislist.append('for '+UN[0]+UN[2])
                     mislist.append(call)
                 else:
@@ -318,6 +285,7 @@ try:
 except:
     print 'get meta failed. might we already have this data?'
     try:
+    	print 'Here is everything in the meta table'
         print db.engine.execute('select * from meta').first()
     except:
         db.session.rollback()
@@ -327,22 +295,28 @@ try:
     get_countries()
     print 'got countries'
 except:
-    print 'get meta failed. might we already have this data?'
+    print 'get countries failed. might we already have this data?'
     try:
+    	print 'Here is everything in the countries table'
         print db.engine.execute('select * from ent').first()
     except:
         db.session.rollback()
         pass
 
-get_supporting_data()
-
 already_got=get_countries_etld()
 
 already_got=[country[0] for country in already_got]
 
-get_these=raw_input('type countries, by iso code, we need data for, seperated by comma \n')
-
-get_these=get_these.split(',')
+all_or_some=raw_input('if you would like to try and build out the entire database, type \'all\', other wise hit enter ')
+if str(all_or_some)=='all':
+	print 'getting all countries availible...'
+	get_these=[]
+	for iso_code in scrape_ISO_codes()[1]:
+		get_these.append(iso_code)
+else:
+	get_these=raw_input('type countries, by iso code, we need data for, seperated by comma \n')
+	get_these=get_these.split(',')
+print get_these
 
 for c in get_these:
     if c in already_got:
@@ -350,11 +324,22 @@ for c in get_these:
     else:
         pass
 
+logname='data_extraction_log__'+\
+str(datetime.datetime.now().month)+\
+str(datetime.datetime.now().day)+\
+str(datetime.datetime.now().year)
+
+ETL_logger = open(logname+'.txt', 'w')
+ETL_logger.write('initial objects created and log started at' + str(datetime.datetime.now().utcnow()) + '\n')
+
+
 for country in get_these:
         print 'now attempting to get %s' % country
-        get_literal_indicators(countries=country, years=Years)
+        get_literal_indicators(countries=country)
         ETL_logger.write('succeeded on %s' % country)
         print 'finished on %s, printing last record in db to see if it went through' % country
         print db.engine.execute('select * from literal').fetchall()[-1]
+        print 'sleeping for 5 minutes to avoid server over load'
+        time.sleep(300)
 
 ETL_logger.close()
