@@ -53,8 +53,8 @@ def scrape_ISO_codes():
 
 
 def get_worldbank_indicator_list():
-    #the below gets a list of dictionaries that constitutes a full library of World Bank indicators
-    #the indicators are simply represented by meta data which is converted into actual indicator names below (line 91 and on)
+    '''the below gets a list of dictionaries that constitutes a full 
+    library of World Bank indicators'''
     indi=rq.get('http://api.worldbank.org/indicators?format=json')
     jindi=indi.json()
     wb_indi_list=jindi[1]
@@ -64,8 +64,8 @@ def get_worldbank_indicator_list():
 
 
 def get_UN_indicator_dic():
-    #the below gets a list of dictionaries that constitutes a full library of United Nations indicators
-    #the indicators are simply represented by id numbers which are converted into actual indicator names below (line 91 and on)
+    '''the below gets a dictionary that constitutes a full 
+    library of United Nations indicators'''
     un_indi=rq.get('http://ec2-52-1-168-42.compute-1.amazonaws.com/version/1/indicator')
     jun_indi=un_indi.json()
     UNHDR_indi_dic=jun_indi['indicator_name']
@@ -74,7 +74,7 @@ def get_UN_indicator_dic():
 
 
 def get_countries():
-    '''this gets and commits all countries and iso codes'''
+    '''this gets and commits all countries and iso codes to the database'''
     ISOs = scrape_ISO_codes()[0]
     for country in ISOs:
         camelot = Entity(
@@ -86,7 +86,7 @@ def get_countries():
     db.session.commit()
 
 def get_meta_indicator_data():
-    '''This gets and commits indicator meta info'''
+    '''This gets and commits indicator meta info to the database'''
     for ind in jun_indi['indicator_name']:
         UN_indicator=Meta_indicator_data(
             p_name=jun_indi['indicator_name'][ind].encode('ascii', 'ignore'),
@@ -106,7 +106,8 @@ def get_meta_indicator_data():
     wb_indi_list=get_worldbank_indicator_list()
     wb_indi_it=enumerate(wb_indi_list)
     for indicator in wb_indi_it:
-        #try and except here is for indicators without topics (aka "families"), which throw index and key errors
+        #try and except here is for indicators without topics 
+        #(aka "families"), which throw index and key errors
         try:
             WB_indicator=Meta_indicator_data(
                 p_name=wb_indi_list[indicator]['name'],
@@ -135,13 +136,14 @@ def get_meta_indicator_data():
 def get_literal_indicators(countries, years=create_years()):
     '''this is function is the begining of a project to make the 
     original API (archive/Bartender_no_ui.py) modular and flexible. 
-    As stated in views.py, I plan on creating a robust system that calls 
-    the public data APIs and stores the data in a Postgres database.'''
+    As stated in views.py, I plan on creating a robust system that 
+    calls the public data APIs and stores the data in a Postgres database.'''
 
     order_countries=[countries]
     order_years=years
 
-    #lines 95-165 parse the dictionaries above to check the availibility of every indicator for the specified Countries (or entities) and years
+    #lines 95-165 parse the dictionaries above to check the availibility of 
+    #every indicator for the specified Countries (or entities) and years
     #if the data exists, it is extracted
 
     wb_availibility_dic={}
