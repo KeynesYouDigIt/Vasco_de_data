@@ -1,6 +1,6 @@
 #Vasco de data
 A flask app designed for the exploration (fast retrieval and cleaning) of public data.
-Working with this code to make your own cleaning and sythesizing data tool should be doable with a basic knowledge of python flask.
+Working with this code to make your own cleaning and sythesizing data tool should be doable with a basic knowledge of python web development, specifically flask.
 
 
 As of now, the data base is populated via a public data API drawing from the UN and World Bank data sources that extracts, standardizes, and stores public data. these procs are stored in Vasco/ETL. I am hard at work making these scripts managable and useable so any user can retool this site to accept their data with basic python knowledge.
