@@ -34,3 +34,7 @@ def list_routes():
 
 if __name__ == '__main__':
     manager.run()
+
+#>python manage.py runserver
+#>python manage.py
+##print other commands

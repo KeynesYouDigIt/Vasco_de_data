@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 basedir = os.getcwd()
 app = Flask(__name__)
 
-app.config['DEBUG'] = False
+app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 try:

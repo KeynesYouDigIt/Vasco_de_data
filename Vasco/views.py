@@ -193,8 +193,13 @@ def blog_it():
     The blog content is scheduled for September,
     will appear on this page
     """
-    title='Welcome!'
-    post='blog content coming September 2016.'
+    title='About'
+    post='This will be the only post I write for some time, I have had to get involved with alot of other projects to keep growing as a developer.\
+     Vasco de data was inspired by many long nights as a researcher attempting to clean and work with public data to make it uniform and ready for modeling.\
+     \n\nThis site does exactly that in a way that is quick and easy to use. Right now, it only works off of what is availible from the world ank and what \
+     is availile from the UN Human Development report.\
+    Once I get the chance to work more on tis project, I plan on adding more sources and functionality.\
+     \n\n\n Of course, it helps to know what people want! please email me with feedback, ideas, or other cool projects at vince.buscarello@gmail.com'
     return render_template('blog.html',
         post=post,
         post_title=title
