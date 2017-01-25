@@ -28,6 +28,11 @@ Below are some initial tips if you are interested in getting started
 ####Postgres is the RDBMS.
 * To start, clone this repo, create a virtual enviroment. Activate it and run the usual `pip install -r requirments.txt`
 
+* Note, for the lxml library to work properly you will need to install the development versions
+
+** for debian based OSs like Ubuntu - `sudo apt-get install python-dev libxml2-dev libxslt1-dev zlib1g-dev`
+** more info here http://stackoverflow.com/questions/5178416/pip-install-lxml-error
+
 * Create a postgres database and note the name, username and password and add an enviromental variable DATABASE_URL equal to postgresql://user:password@localhost:5432/DBNAME. 
 
 ** To do this use the set command in windows and export for bash, and add these commands to the begining of the activate script in your virtual enviroment, which should not push to github with the source code.
@@ -38,6 +43,7 @@ Below are some initial tips if you are interested in getting started
 
 *[Good short tutorial on this here](http://andrewtorkbaker.com/using-environment-variables-with-django-settings)*
 
+*start the app! `python manage.py runserver`
 
 ####As of 7/24, as the ETL tools are built to work by running them in the command line. 
 * They will use the database name set in the connection string to alert the user which database is being worked on. the connection is created using the enviromental variable set above. This allows your computer to store the connection to your local or the production database and set it wherever it is running.

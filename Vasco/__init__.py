@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 try:
 	app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 except KeyError:
-    raise Exception('I dont see a database connection in the Database URL system variablbe - see the read me on setting this up')
+    raise Exception('I dont see a database connection in the Database URL system variable - see the read me on setting this up')
 
 #blueprints for moduarization of the app and its functions coming soon!
 
