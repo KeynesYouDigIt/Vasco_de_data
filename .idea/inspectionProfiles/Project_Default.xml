@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="32">
+          <list size="39">
             <item index="0" class="java.lang.String" itemvalue="alembic" />
             <item index="1" class="java.lang.String" itemvalue="Babel" />
             <item index="2" class="java.lang.String" itemvalue="SQLAlchemy" />
@@ -37,6 +37,13 @@
             <item index="29" class="java.lang.String" itemvalue="inflect" />
             <item index="30" class="java.lang.String" itemvalue="pytz" />
             <item index="31" class="java.lang.String" itemvalue="Mako" />
+            <item index="32" class="java.lang.String" itemvalue="pip-log.txt" />
+            <item index="33" class="java.lang.String" itemvalue="coverage.xml" />
+            <item index="34" class="java.lang.String" itemvalue="Vasco_data_set" />
+            <item index="35" class="java.lang.String" itemvalue="set_local.py" />
+            <item index="36" class="java.lang.String" itemvalue="Vasco_data_set.csv" />
+            <item index="37" class="java.lang.String" itemvalue="pip-delete-this-directory.txt" />
+            <item index="38" class="java.lang.String" itemvalue="nosetests.xml" />
           </list>
         </value>
       </option>
